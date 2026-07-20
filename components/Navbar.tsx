@@ -45,7 +45,7 @@ export default function Navbar() {
         >
           <Image
             src="/logo.png"
-            alt="ANATECH"
+            alt="ANATECH Technology Solutions Logo"
             width={52}
             height={52}
           />

@@ -3,7 +3,10 @@ import "./globals.css";
 
 const organizationSchema = {
   "@context": "https://schema.org",
+
   "@type": "Organization",
+
+  "@id": "https://www.anatechsolutions.in/#organization",
 
   name: "ANATECH Technology Solutions",
 
@@ -11,8 +14,19 @@ const organizationSchema = {
 
   logo: "https://www.anatechsolutions.in/logo.png",
 
+  image: "https://www.anatechsolutions.in/opengraph-image.png",
+
   description:
     "Professional Web Development, Artificial Intelligence, Software Development, Digital Media, Business Consultancy and Government e-Service Solutions.",
+
+  email: "anatech.operations@gmail.com",
+
+  telephone: "+91-8921520858",
+
+  foundingLocation: {
+    "@type": "Place",
+    name: "Kollam, Kerala, India",
+  },
 
   address: {
     "@type": "PostalAddress",
@@ -21,10 +35,15 @@ const organizationSchema = {
     addressCountry: "IN",
   },
 
+  areaServed: {
+    "@type": "Country",
+    name: "India",
+  },
+
   sameAs: [
     "https://www.facebook.com/",
-    "https://www.linkedin.com/",
-  ],
+    "https://www.linkedin.com/"
+  ]
 };
 
 export const metadata: Metadata = {
@@ -87,7 +106,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image.png",
         width: 1200,
         height: 630,
-        alt: "ANATECH Technology Solutions",
+        alt: "ANATECH Technology Solutions Logo",
       },
     ],
   },

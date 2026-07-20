@@ -1,0 +1,25 @@
+{
+  "name": "ANATECH Technology Solutions",
+  "short_name": "ANATECH",
+  "description": "Professional Web Development, AI Solutions, Software Development, Digital Media, Business Consultancy and Government e-Service Solutions.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0B1120",
+  "theme_color": "#0B1120",
+  "orientation": "portrait",
+  "lang": "en",
+
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -181,7 +181,7 @@ export default function Hero() {
 
               <img
                 src="/logo.png"
-                alt="ANATECH Logo"
+                alt="ANATECH Technology Solutions Logo"
                 className="h-44 w-44 object-contain"
               />
 
