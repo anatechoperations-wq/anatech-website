@@ -4,48 +4,83 @@ import { motion } from "framer-motion";
 
 const stats = [
   {
-    number: "250+",
-    title: "Projects",
+    icon: "🤖",
+    title: "AI Solutions",
+    description: "Intelligent automation and AI-powered applications",
   },
   {
-    number: "120+",
-    title: "Clients",
+    icon: "🌐",
+    title: "Web Development",
+    description: "Modern, responsive and SEO-friendly websites",
   },
   {
-    number: "15+",
-    title: "Industries",
+    icon: "💻",
+    title: "Custom Software",
+    description: "Business software tailored to your requirements",
   },
   {
-    number: "24/7",
-    title: "Support",
+    icon: "☁️",
+    title: "Cloud & Support",
+    description: "Secure deployment and continuous technical support",
   },
 ];
 
 export default function Stats() {
   return (
-    <section className="bg-slate-950 py-20">
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              className="bg-slate-900 rounded-2xl p-10 text-center border border-blue-900 hover:border-cyan-400 duration-300"
-            >
-              <h2 className="text-5xl font-bold text-blue-400">
-                {item.number}
-              </h2>
+    <section className="bg-slate-950 py-24">
+  <div className="max-w-7xl mx-auto px-6">
 
-              <p className="mt-4 text-gray-300 text-lg">
-                {item.title}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
+    <div className="text-center mb-16">
+      <p className="text-blue-400 font-semibold uppercase tracking-[4px]">
+        OUR EXPERTISE
+      </p>
+
+      <h2 className="text-4xl md:text-5xl font-bold text-white mt-4">
+        Technology That Drives Business Growth
+      </h2>
+
+      <p className="text-gray-400 mt-6 max-w-3xl mx-auto">
+        We deliver innovative digital solutions that help businesses
+        become faster, smarter and more efficient.
+      </p>
+    </div>
+
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+      {stats.map((item, index) => (
+
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.15 }}
+          whileHover={{
+            y: -8,
+            scale: 1.03
+          }}
+          className="rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-lg p-8 text-center shadow-lg hover:border-blue-500 transition-all duration-300"
+        >
+
+          <div className="text-5xl mb-5">
+            {item.icon}
+          </div>
+
+          <h3 className="text-2xl font-bold text-white">
+            {item.title}
+          </h3>
+
+          <p className="text-gray-400 mt-4 leading-7">
+            {item.description}
+          </p>
+
+        </motion.div>
+
+      ))}
+
+    </div>
+
+  </div>
+</section>
   );
 }
