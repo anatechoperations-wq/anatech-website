@@ -1,8 +1,34 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+
+  name: "ANATECH Technology Solutions",
+
+  url: "https://www.anatechsolutions.in",
+
+  logo: "https://www.anatechsolutions.in/logo.png",
+
+  description:
+    "Professional Web Development, Artificial Intelligence, Software Development, Digital Media, Business Consultancy and Government e-Service Solutions.",
+
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Kollam",
+    addressRegion: "Kerala",
+    addressCountry: "IN",
+  },
+
+  sameAs: [
+    "https://www.facebook.com/",
+    "https://www.linkedin.com/",
+  ],
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://anatechsolutions.in"),
+  metadataBase: new URL("https://www.anatechsolutions.in"),
 
   title: {
     default: "ANATECH Technology Solutions",
@@ -14,14 +40,48 @@ export const metadata: Metadata = {
 
   applicationName: "ANATECH Technology Solutions",
 
+  keywords: [
+    "ANATECH",
+    "ANATECH Technology Solutions",
+    "Web Development Kerala",
+    "AI Solutions Kerala",
+    "Software Development Kerala",
+    "Digital Media Kerala",
+    "Business Consultancy Kerala",
+    "Government e Services",
+    "Import Export Kerala",
+    "Technology Solutions",
+  ],
+
+  authors: [
+    {
+      name: "ANATECH Technology Solutions",
+    },
+  ],
+
+  creator: "ANATECH Technology Solutions",
+
+  publisher: "ANATECH Technology Solutions",
+
+  category: "Technology",
+
+  alternates: {
+    canonical: "https://www.anatechsolutions.in",
+  },
+
   openGraph: {
     title: "ANATECH Technology Solutions",
     description:
       "Empowering Businesses Through Technology & Artificial Intelligence.",
-    url: "https://anatechsolutions.in",
+
+    url: "https://www.anatechsolutions.in",
+
     siteName: "ANATECH Technology Solutions",
+
     locale: "en_IN",
+
     type: "website",
+
     images: [
       {
         url: "/opengraph-image.png",
@@ -34,9 +94,12 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
+
     title: "ANATECH Technology Solutions",
+
     description:
       "Empowering Businesses Through Technology & Artificial Intelligence.",
+
     images: ["/twitter-image.png"],
   },
 
@@ -44,10 +107,6 @@ export const metadata: Metadata = {
     icon: "/icon.png",
     shortcut: "/icon.png",
     apple: "/icon.png",
-  },
-
-  alternates: {
-    canonical: "https://anatechsolutions.in",
   },
 };
 
@@ -58,7 +117,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
+
+        {children}
+      </body>
     </html>
   );
 }
