@@ -58,6 +58,10 @@ export const metadata: Metadata = {
     "Professional Web Development, AI Solutions, Software Development, Branding, Cloud & Digital Transformation.",
 
   applicationName: "ANATECH Technology Solutions",
+  
+  verification: {
+  google: "fzvyZq03T-uZEyrCADvd2yG8_jEWqixeM9AikvR3TtQ",
+},
 
   keywords: [
     "ANATECH",
