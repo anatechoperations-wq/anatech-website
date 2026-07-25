@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -38,13 +39,8 @@ const organizationSchema = {
   areaServed: {
     "@type": "Country",
     name: "India",
-  },
-
-  sameAs: [
-    "https://www.facebook.com/",
-    "https://www.linkedin.com/"
-  ]
-};
+  },  
+  };
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.anatechsolutions.in"),
@@ -59,7 +55,7 @@ export const metadata: Metadata = {
 
   applicationName: "ANATECH Technology Solutions",
   
-  verification: {
+ verification: {
   google: "fzvyZq03T-uZEyrCADvd2yG8_jEWqixeM9AikvR3TtQ",
 },
 
@@ -141,15 +137,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema),
-          }}
-        />
 
-        {children}
-      </body>
+  <GoogleAnalytics />
+
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify(organizationSchema),
+    }}
+  />
+
+  {children}
+
+</body>
     </html>
   );
 }
