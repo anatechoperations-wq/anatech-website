@@ -14,13 +14,17 @@ export default function Home() {
     <>
       <ScrollProgress />
       <Navbar />
-      <Hero />
-      <Stats />
-      <About />
-      <Services />
-      <Industries />
-      <WhyChoose />
-      <Contact />
+
+      <main>
+        <Hero />
+        <Stats />
+        <About />
+        <Services />
+        <Industries />
+        <WhyChoose />
+        <Contact />
+      </main>
+
       <Footer />
     </>
   );

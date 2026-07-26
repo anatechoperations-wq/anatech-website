@@ -16,11 +16,11 @@ export default function Chatbase() {
           !window.chatbase ||
           window.chatbase("getState") !== "initialized"
         ) {
-          window.chatbase = (...arguments: any[]) => {
+          window.chatbase = (...args: any[]) => {
             if (!window.chatbase.q) {
               window.chatbase.q = [];
             }
-            window.chatbase.q.push(arguments);
+            window.chatbase.q.push(args);
           };
 
           window.chatbase = new Proxy(window.chatbase, {
@@ -29,7 +29,7 @@ export default function Chatbase() {
                 return target.q;
               }
 
-              return (...args) => target(prop as any, ...args);
+              return (...args: unknown[]) => target(prop as any, ...args);
             },
           });
         }
@@ -39,8 +39,6 @@ export default function Chatbase() {
         script.src = "https://www.chatbase.co/embed.min.js";
 
         script.id = "5VCZcQAgpV-Iv18FxcOK4";
-
-        script.domain = "www.chatbase.co";
 
         document.body.appendChild(script);
       })();
