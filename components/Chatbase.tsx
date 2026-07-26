@@ -1,46 +1,65 @@
 "use client";
 
-import Script from "next/script";
+import { useEffect } from "react";
 
 export default function Chatbase() {
-  return (
-    <>
-      <Script id="chatbase-init" strategy="afterInteractive">
-        {`
-          (function(){
-            if(!window.chatbase || window.chatbase("getState")!=="initialized"){
-              window.chatbase=(...arguments)=>{
-                if(!window.chatbase.q){
-                  window.chatbase.q=[];
-                }
-                window.chatbase.q.push(arguments);
-              };
-              window.chatbase=new Proxy(window.chatbase,{
-                get(target,prop){
-                  if(prop==="q"){
-                    return target.q;
-                  }
-                  return (...args)=>target(prop,...args);
-                }
-              });
-            }
+  useEffect(() => {
+    let loaded = false;
 
-            const onLoad=function(){
-              const script=document.createElement("script");
-              script.src="https://www.chatbase.co/embed.min.js";
-              script.id="5VCZcQAgpV-Iv18FxcOK4";
-              script.domain="www.chatbase.co";
-              document.body.appendChild(script);
-            };
+    const loadChatbase = () => {
+      if (loaded) return;
 
-            if(document.readyState==="complete"){
-              onLoad();
-            } else {
-              window.addEventListener("load", onLoad);
+      loaded = true;
+
+      (function () {
+        if (
+          !window.chatbase ||
+          window.chatbase("getState") !== "initialized"
+        ) {
+          window.chatbase = (...arguments: any[]) => {
+            if (!window.chatbase.q) {
+              window.chatbase.q = [];
             }
-          })();
-        `}
-      </Script>
-    </>
-  );
+            window.chatbase.q.push(arguments);
+          };
+
+          window.chatbase = new Proxy(window.chatbase, {
+            get(target, prop) {
+              if (prop === "q") {
+                return target.q;
+              }
+
+              return (...args) => target(prop as any, ...args);
+            },
+          });
+        }
+
+        const script = document.createElement("script");
+
+        script.src = "https://www.chatbase.co/embed.min.js";
+
+        script.id = "5VCZcQAgpV-Iv18FxcOK4";
+
+        script.domain = "www.chatbase.co";
+
+        document.body.appendChild(script);
+      })();
+    };
+
+    const handleScroll = () => {
+      if (window.scrollY > 250) {
+        loadChatbase();
+
+        window.removeEventListener("scroll", handleScroll);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return null;
 }
