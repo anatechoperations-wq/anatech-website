@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import Chatbase from "@/components/Chatbase";
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -136,9 +137,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+   <body>
 
   <GoogleAnalytics />
+
+  <Chatbase />
 
   <script
     type="application/ld+json"
