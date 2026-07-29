@@ -8,6 +8,7 @@ import DevelopmentProcess from "@/components/services/DevelopmentProcess";
 import TechnologyStack from "@/components/services/TechnologyStack";
 import FAQ from "@/components/services/FAQ";
 import CallToAction from "@/components/services/CallToAction";
+import OurCommitment from "@/components/services/OurCommitment";
 
 export const metadata: Metadata = {
   title: "Professional Web Development Services | ANATECH Technology Solutions",
@@ -60,6 +61,7 @@ export default function WebDevelopmentPage() {
         <DevelopmentProcess />
         <TechnologyStack />
         <FAQ />
+        <OurCommitment />
         <CallToAction />
       </main>
 
