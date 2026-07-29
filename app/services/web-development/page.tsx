@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServiceHero from "@/components/services/ServiceHero";
 import ServiceOverview from "@/components/services/ServiceOverview";
+import FeaturesGrid from "@/components/services/FeaturesGrid";
 
 export const metadata: Metadata = {
   title: "Professional Web Development Services | ANATECH Technology Solutions",
@@ -49,9 +50,10 @@ export default function WebDevelopmentPage() {
       <Navbar />
 
       <main className="min-h-screen bg-[#06112A] text-white">
-       <ServiceHero />
-       <ServiceOverview />
-     </main>
+        <ServiceHero />
+        <ServiceOverview />
+        <FeaturesGrid />
+      </main>
 
       <Footer />
     </>
