@@ -6,6 +6,7 @@ import ServiceOverview from "@/components/services/ServiceOverview";
 import FeaturesGrid from "@/components/services/FeaturesGrid";
 import DevelopmentProcess from "@/components/services/DevelopmentProcess";
 import TechnologyStack from "@/components/services/TechnologyStack";
+import FAQ from "@/components/services/FAQ";
 
 export const metadata: Metadata = {
   title: "Professional Web Development Services | ANATECH Technology Solutions",
@@ -57,6 +58,7 @@ export default function WebDevelopmentPage() {
         <FeaturesGrid />
         <DevelopmentProcess />
         <TechnologyStack />
+        <FAQ />
       </main>
 
       <Footer />
