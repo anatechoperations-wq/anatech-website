@@ -9,6 +9,7 @@ import TechnologyStack from "@/components/services/TechnologyStack";
 import FAQ from "@/components/services/FAQ";
 import CallToAction from "@/components/services/CallToAction";
 import OurCommitment from "@/components/services/OurCommitment";
+import Breadcrumb from "@/components/common/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "Professional Web Development Services | ANATECH Technology Solutions",
@@ -53,6 +54,21 @@ export default function WebDevelopmentPage() {
   return (
     <>
       <Navbar />
+      <Breadcrumb
+  items={[
+    {
+      label: "Home",
+      href: "/",
+    },
+    {
+      label: "Services",
+      href: "/#services",
+    },
+    {
+      label: "Web Development",
+    },
+  ]}
+/>
 
       <main className="min-h-screen bg-[#06112A] text-white">
         <ServiceHero />

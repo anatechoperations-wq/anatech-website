@@ -1,3 +1,4 @@
+import ServiceCard from "@/components/common/ServiceCard";
 import {
   Zap,
   ShieldCheck,
@@ -50,7 +51,6 @@ export default function FeaturesGrid() {
   return (
     <section className="bg-[#06112A] py-24">
       <div className="mx-auto max-w-7xl px-6">
-
         <div className="text-center">
           <h2 className="text-4xl font-bold text-white">
             Why Choose ANATECH?
@@ -63,30 +63,14 @@ export default function FeaturesGrid() {
         </div>
 
         <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-
-          {features.map((feature) => {
-            const Icon = feature.icon;
-
-            return (
-              <div
-                key={feature.title}
-                className="rounded-2xl border border-white/10 bg-white/5 p-8 transition-all duration-300 hover:-translate-y-2 hover:border-cyan-400 hover:bg-white/10"
-              >
-                <div className="mb-6 inline-flex rounded-xl bg-cyan-500/10 p-4">
-                  <Icon className="h-8 w-8 text-cyan-400" />
-                </div>
-
-                <h3 className="text-2xl font-semibold text-white">
-                  {feature.title}
-                </h3>
-
-                <p className="mt-4 leading-7 text-slate-300">
-                  {feature.description}
-                </p>
-              </div>
-            );
-          })}
-
+          {features.map((feature) => (
+            <ServiceCard
+              key={feature.title}
+              icon={feature.icon}
+              title={feature.title}
+              description={feature.description}
+            />
+          ))}
         </div>
       </div>
     </section>
