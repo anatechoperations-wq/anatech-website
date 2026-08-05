@@ -8,6 +8,8 @@ import BusinessOverview from "@/components/services/BusinessOverview";
 
 import BusinessServices from "@/components/services/BusinessServices";
 
+import BusinessProcess from "@/components/services/BusinessProcess";
+
 export const metadata: Metadata = {
   title:
     "Business Consultancy Services | ANATECH Technology Solutions",
@@ -41,6 +43,7 @@ export default function BusinessConsultancyPage() {
       <BusinessHero />
       <BusinessOverview />
       <BusinessServices />
+      <BusinessProcess />
     </ServiceLayout>
   );
 }
