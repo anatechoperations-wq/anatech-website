@@ -31,10 +31,10 @@ const serviceLinks = [
     name: "Business Consultancy",
     href: "/services/business-consultancy",
   },
-  {
-    name: "Business Consultancy",
-    href: "/services/business-consultancy",
-  }, 
+  //{
+  //  name: "Business Consultancy",
+  //  href: "/services/business-consultancy",
+ // }, 
 ];
 
 const navLinkClass =
