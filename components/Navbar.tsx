@@ -27,6 +27,10 @@ const serviceLinks = [
     name: "Software Development",
     href: "/services/software-development",
   },
+  {
+    name: "Business Consultancy",
+    href: "/services/business-consultancy",
+  }, 
 ];
 
 const navLinkClass =
