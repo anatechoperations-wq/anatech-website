@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 import {
   MapPin,
   Mail,
@@ -12,6 +13,55 @@ import {
 } from "lucide-react";
 
 export default function Contact() {
+  const [form, setForm] = useState({
+  name: "",
+  email: "",
+  subject: "",
+  message: "",
+});
+
+const [loading, setLoading] = useState(false);
+
+const [status, setStatus] = useState("");
+const handleSubmit = async (
+  e: React.FormEvent<HTMLFormElement>
+) => {
+  e.preventDefault();
+  
+  console.log("FORM SUBMITTED");
+
+  setLoading(true);
+  setStatus("");
+
+  try {
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      setStatus("success");
+
+      setForm({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } else {
+      setStatus("error");
+    }
+  } catch {
+    setStatus("error");
+  }
+
+  setLoading(false);
+};
   return (
     <section
       id="contact"
@@ -239,6 +289,7 @@ export default function Contact() {
           {/* RIGHT SIDE */}
 
           <motion.form
+            onSubmit={handleSubmit}
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -248,34 +299,62 @@ export default function Contact() {
             <input
               type="text"
               placeholder="Your Name"
+              value={form.name}
+              onChange={(e) =>
+                setForm({ ...form, name: e.target.value })
+              }
               className="w-full mb-5 p-4 rounded-xl bg-slate-800 border border-slate-700 focus:border-blue-500 outline-none"
             />
 
             <input
               type="email"
               placeholder="Email Address"
+              value={form.email}
+              onChange={(e) =>
+                setForm({ ...form, email: e.target.value })
+              }
               className="w-full mb-5 p-4 rounded-xl bg-slate-800 border border-slate-700 focus:border-blue-500 outline-none"
             />
 
             <input
               type="text"
               placeholder="Subject"
+              value={form.subject}
+              onChange={(e) =>
+                setForm({ ...form, subject: e.target.value })
+              }
               className="w-full mb-5 p-4 rounded-xl bg-slate-800 border border-slate-700 focus:border-blue-500 outline-none"
             />
 
             <textarea
               rows={6}
               placeholder="Your Message"
+              value={form.message}
+              onChange={(e) =>
+                setForm({ ...form, message: e.target.value })
+              }
               className="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 focus:border-blue-500 outline-none"
             />
 
             <button
               type="submit"
-              className="mt-6 w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:scale-[1.02] transition rounded-xl py-4 font-semibold flex items-center justify-center gap-2"
+              disabled={loading}
+              className="mt-6 w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:scale-[1.02] transition rounded-xl py-4 font-semibold flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <Send size={20} />
-              Send Message
+              {loading ? "Sending..." : "Send Message"}
             </button>
+            {status === "success" && (
+              <p className="mt-4 text-center text-green-400">
+                ✅ Your message has been sent successfully.
+              </p>
+            )}
+
+            {status === "error" && (
+              <p className="mt-4 text-center text-red-400">
+                ❌ Failed to send your message. Please try again.
+              </p>
+            )}
 
           </motion.form>
 
