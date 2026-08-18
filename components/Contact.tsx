@@ -16,7 +16,8 @@ export default function Contact() {
   const [form, setForm] = useState({
   name: "",
   email: "",
-  subject: "",
+  phone: "",
+  service: "",
   message: "",
 });
 
@@ -27,7 +28,7 @@ const handleSubmit = async (
   e: React.FormEvent<HTMLFormElement>
 ) => {
   e.preventDefault();
-  
+
   console.log("FORM SUBMITTED");
 
   setLoading(true);
@@ -48,11 +49,12 @@ const handleSubmit = async (
       setStatus("success");
 
       setForm({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-      });
+      name: "",
+      email: "",
+      phone: "",
+      service: "",
+      message: "",
+    });
     } else {
       setStatus("error");
     }
@@ -317,14 +319,30 @@ const handleSubmit = async (
             />
 
             <input
-              type="text"
-              placeholder="Subject"
-              value={form.subject}
+              type="tel"
+              placeholder="Phone Number"
+              value={form.phone}
               onChange={(e) =>
-                setForm({ ...form, subject: e.target.value })
+                setForm({ ...form, phone: e.target.value })
               }
               className="w-full mb-5 p-4 rounded-xl bg-slate-800 border border-slate-700 focus:border-blue-500 outline-none"
             />
+
+            <select
+              value={form.service}
+              onChange={(e) =>
+                setForm({ ...form, service: e.target.value })
+              }
+              className="w-full mb-5 p-4 rounded-xl bg-slate-800 border border-slate-700 focus:border-blue-500 outline-none"
+            >
+              <option value="">Select a Service</option>
+              <option>Web Development</option>
+              <option>AI Solutions</option>
+              <option>Software Development</option>
+              <option>Business Consultancy</option>
+              <option>Digital Marketing</option>
+              <option>Government e-Services</option>
+            </select>
 
             <textarea
               rows={6}
