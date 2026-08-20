@@ -246,7 +246,7 @@ export default function Footer() {
             behavior: "smooth",
           })
         }
-        className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-700 shadow-xl flex items-center justify-center text-white transition"
+        className="fixed bottom-6 right-6 w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 shadow-xl flex items-center justify-center text-white transition"
         aria-label="Back to top"
       >
         <ArrowUp size={22} />
