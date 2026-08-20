@@ -18,7 +18,7 @@ export default function FloatingWhatsApp() {
         type: "spring",
         stiffness: 260,
       }}
-      className="fixed bottom-6 right-6 z-[9999] flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-white shadow-2xl shadow-green-500/30 transition hover:bg-green-600"
+      className="fixed bottom-24 right-6 z-[9999] flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-white shadow-2xl shadow-green-500/30 transition hover:bg-green-600"
       aria-label="Chat on WhatsApp"
     >
       <MessageCircle size={30} />
