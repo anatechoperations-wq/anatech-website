@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import Stats from "@/components/Stats";
 import About from "@/components/About";
 import Services from "@/components/Services";
+import SolutionsGrid from "@/components/SolutionsGrid";
 import Industries from "@/components/Industries";
 import WhyChoose from "@/components/WhyChoose";
 import Contact from "@/components/Contact";
@@ -20,6 +21,7 @@ export default function Home() {
         <Stats />
         <About />
         <Services />
+        <SolutionsGrid />
         <Industries />
         <WhyChoose />
         <Contact />
