@@ -1,24 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-
+import { appendToSheet } from "@/lib/googleSheets";
 
 export async function POST(request: NextRequest) {
-    const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env.RESEND_API_KEY;
 
-if (!apiKey) {
-  return NextResponse.json(
-    {
-      success: false,
-      message: "Server configuration error.",
-    },
-    { status: 500 }
-  );
-}
+  if (!apiKey) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Server configuration error.",
+      },
+      { status: 500 }
+    );
+  }
 
-const resend = new Resend(apiKey);
+  const resend = new Resend(apiKey);
+
   try {
     const { name, email, phone, service, message } =
-  await request.json();
+      await request.json();
 
     if (!name || !email || !phone || !service || !message) {
       return NextResponse.json(
@@ -30,6 +31,7 @@ const resend = new Resend(apiKey);
       );
     }
 
+    // Send Email
     const { error } = await resend.emails.send({
       from: "ANATECH Website <onboarding@resend.dev>",
       to: ["anatech.operations@gmail.com"],
@@ -53,21 +55,37 @@ const resend = new Resend(apiKey);
     });
 
     if (error) {
+      console.error("Resend Error:", error);
+
       return NextResponse.json(
         {
           success: false,
-          message: error.message,
+          message: "Failed to send email.",
         },
         { status: 500 }
       );
+    }
+
+    // Save to Google Sheet
+    try {
+      await appendToSheet({
+        name,
+        email,
+        phone,
+        service,
+        message,
+      });
+    } catch (sheetError) {
+      console.error("Google Sheet Error:", sheetError);
     }
 
     return NextResponse.json({
       success: true,
       message: "Message sent successfully.",
     });
+  } catch (error) {
+    console.error("API Error:", error);
 
-  } catch {
     return NextResponse.json(
       {
         success: false,
