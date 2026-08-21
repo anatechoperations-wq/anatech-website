@@ -68,30 +68,25 @@ export async function POST(request: NextRequest) {
 
     // Save to Google Sheet
     try {
-      await appendToSheet({
-        name,
-        email,
-        phone,
-        service,
-        message,
-      });
-    } catch (sheetError) {
-      console.error("Google Sheet Error:", sheetError);
-    }
+  await appendToSheet({
+    name,
+    email,
+    phone,
+    service,
+    message,
+  });
+} catch (sheetError) {
+  console.error("GOOGLE SHEET ERROR:", sheetError);
 
-    return NextResponse.json({
-      success: true,
-      message: "Message sent successfully.",
-    });
-  } catch (error) {
-    console.error("API Error:", error);
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Something went wrong.",
-      },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json(
+    {
+      success: false,
+      message:
+        sheetError instanceof Error
+          ? sheetError.message
+          : String(sheetError),
+    },
+    { status: 500 }
+  );
+}
 }
