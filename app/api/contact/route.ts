@@ -41,11 +41,8 @@ export async function POST(request: NextRequest) {
         <h2>New Contact Form Submission</h2>
 
         <p><strong>Name:</strong> ${name}</p>
-
         <p><strong>Email:</strong> ${email}</p>
-
         <p><strong>Phone:</strong> ${phone}</p>
-
         <p><strong>Service:</strong> ${service}</p>
 
         <hr>
@@ -68,25 +65,32 @@ export async function POST(request: NextRequest) {
 
     // Save to Google Sheet
     try {
-  await appendToSheet({
-    name,
-    email,
-    phone,
-    service,
-    message,
-  });
-} catch (sheetError) {
-  console.error("GOOGLE SHEET ERROR:", sheetError);
+      await appendToSheet({
+        name,
+        email,
+        phone,
+        service,
+        message,
+      });
+    } catch (sheetError) {
+      console.error("Google Sheet Error:", sheetError);
 
-  return NextResponse.json(
-    {
-      success: false,
-      message:
-        sheetError instanceof Error
-          ? sheetError.message
-          : String(sheetError),
-    },
-    { status: 500 }
-  );
-}
+      // Email already sent, so don't fail the request
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: "Message sent successfully.",
+    });
+  } catch (error) {
+    console.error("API Error:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Something went wrong.",
+      },
+      { status: 500 }
+    );
+  }
 }
