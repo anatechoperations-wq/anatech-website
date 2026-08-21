@@ -64,19 +64,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Save to Google Sheet
-    try {
-      await appendToSheet({
-        name,
-        email,
-        phone,
-        service,
-        message,
-      });
-    } catch (sheetError) {
-      console.error("Google Sheet Error:", sheetError);
-
-      // Email already sent, so don't fail the request
-    }
+    await appendToSheet({
+      name,
+      email,
+      phone,
+      service,
+      message,
+    });
 
     return NextResponse.json({
       success: true,
@@ -88,7 +82,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        message: "Something went wrong.",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Something went wrong.",
       },
       { status: 500 }
     );
