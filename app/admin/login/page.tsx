@@ -1,0 +1,1 @@
+import { Suspense } from "react"; import { AdminLoginForm } from "@/components/admin/AdminLoginForm"; export const metadata={title:"CRM Sign in"}; export default function LoginPage(){return <Suspense fallback={<main>Loading...</main>}><AdminLoginForm/></Suspense>;}
