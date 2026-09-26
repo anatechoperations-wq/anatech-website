@@ -87,3 +87,39 @@ export async function saveCrmDocument(document: CrmDocumentInput) {
     },
   });
 }
+
+export type SavedCrmDocument = {
+  createdAt: string;
+  type: CrmDocumentType;
+  customer: string;
+  total: string;
+};
+
+export async function getCrmDocuments(type: CrmDocumentType): Promise<SavedCrmDocument[]> {
+  if (!process.env.GOOGLE_SHEET_ID || !process.env.GOOGLE_CLIENT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY) return [];
+  try {
+    const sheets = google.sheets({ version: "v4", auth: getAuth() });
+    const spreadsheet = await sheets.spreadsheets.get({
+      spreadsheetId: process.env.GOOGLE_SHEET_ID,
+      fields: "sheets.properties",
+    });
+    const exists = spreadsheet.data.sheets?.some((sheet) => sheet.properties?.title === SHEET_NAME);
+    if (!exists) return [];
+    const result = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GOOGLE_SHEET_ID,
+      range: "'" + SHEET_NAME + "'!A2:H",
+    });
+    return (result.data.values ?? [])
+      .filter((row) => row[1] === type)
+      .map((row) => ({
+        createdAt: String(row[0] ?? ""),
+        type,
+        customer: String(row[2] ?? ""),
+        total: String(row[6] ?? ""),
+      }))
+      .reverse();
+  } catch (error) {
+    console.error("Unable to load CRM documents.", error);
+    return [];
+  }
+}
