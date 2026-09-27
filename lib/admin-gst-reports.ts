@@ -2,6 +2,7 @@ import "server-only";
 
 import { google } from "googleapis";
 import { getMasterSettings } from "@/lib/admin-master-settings";
+import { getCreditNoteTotals } from "@/lib/admin-credit-notes";
 import type { GstComplianceReport, GstRegisterRow } from "@/lib/gst-types";
 
 const SHEET_NAME = "CRM Documents";
@@ -41,6 +42,10 @@ export async function getGstComplianceReport(period = defaultPeriod()): Promise<
     incompleteRows: 0,
     companyGstinConfigured: false,
     filingReadiness: [],
+    creditNotes: { taxable: 0, cgst: 0, kgst: 0, igst: 0, total: 0, count: 0 },
+    netTaxableValue: 0,
+    netTax: 0,
+    netInvoiceValue: 0,
   };
 
   const settings = await getMasterSettings();
@@ -102,6 +107,10 @@ export async function getGstComplianceReport(period = defaultPeriod()): Promise<
       if (row.category === "B2B") report.b2bCount += 1; else report.b2cCount += 1;
     }
     report.totalTax = report.totalCgst + report.totalKgst + report.totalIgst;
+    report.creditNotes = await getCreditNoteTotals(period);
+    report.netTaxableValue = report.totalTaxableValue - report.creditNotes.taxable;
+    report.netTax = report.totalTax - report.creditNotes.cgst - report.creditNotes.kgst - report.creditNotes.igst;
+    report.netInvoiceValue = report.totalInvoiceValue - report.creditNotes.total;
 
     if (!report.companyGstinConfigured) report.filingReadiness.push("Add the verified 15-character company GSTIN in Master Settings.");
     if (report.incompleteRows) report.filingReadiness.push(report.incompleteRows + " invoice record(s) need review before filing.");
