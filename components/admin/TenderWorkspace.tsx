@@ -1,7 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { boqStatuses, defaultTenderChecklist, tenderStatuses, type TenderRecord } from "@/lib/admin-tenders";
+const tenderStatuses = ["Draft", "Documents pending", "Ready for review", "Submitted", "Awarded", "Not awarded"] as const;
+const boqStatuses = ["Not received", "Original template preserved", "Completed for review", "Manual submission verified"] as const;
+const defaultTenderChecklist = ["Tender schedule and NIT reviewed", "Signed bid document", "Company registration / GSTIN", "PAN / tax registration", "IEC, where the tender requires it", "Financial statements / turnover proof", "Experience / work completion certificates", "Authorization / power of attorney", "EMD or exemption proof", "BOQ source file kept unchanged", "Corrigendum checked before submission", "Digital signature and portal submission verified"] as const;
+type TenderRecord = { createdAt: string; reference: string; title: string; authority: string; portalUrl: string; dueDate: string; emdAmount: number; status: string; boqStatus: string; mandatoryDocuments: string[]; notes: string; checklist: Record<string, boolean> };
 
 export function TenderWorkspace({ tenders }: { tenders: TenderRecord[] }) {
   const router = useRouter();
