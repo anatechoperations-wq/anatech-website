@@ -31,16 +31,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid document data." }, { status: 400 });
   }
 
+  const document = {
+    type: body.type as CrmDocumentInput["type"],
+    customer: body.customer.trim(),
+    taxRate: body.taxRate as number,
+    subtotal: body.subtotal as number,
+    taxAmount: body.taxAmount as number,
+    total: body.total as number,
+    lines: body.lines as CrmDocumentInput["lines"],
+  };
+
   try {
-    await saveCrmDocument({
-      type: body.type,
-      customer: body.customer.trim(),
-      taxRate: body.taxRate,
-      subtotal: body.subtotal,
-      taxAmount: body.taxAmount,
-      total: body.total,
-      lines: body.lines,
-    });
+    await saveCrmDocument(document);
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Unable to save CRM document.", error);
