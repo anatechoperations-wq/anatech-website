@@ -63,8 +63,8 @@ export async function POST(request: Request) {
   };
 
   try {
-    await saveCrmDocument(document);
-    return NextResponse.json({ ok: true });
+    const reference = await saveCrmDocument(document);
+    return NextResponse.json({ ok: true, reference });
   } catch (error) {
     console.error("Unable to save CRM document.", error);
     return NextResponse.json({ error: "Could not save the document." }, { status: 500 });
