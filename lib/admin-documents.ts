@@ -11,7 +11,7 @@ export type CrmDocumentInput = {
   customerGstin: string;
   placeOfSupplyCode: string;
   taxRate: number;
-  lines: Array<{ description: string; quantity: number; rate: number }>;
+  lines: Array<{ description: string; quantity: number; rate: number; hsnSac: string; unit: string; }>;
 };
 
 export type DocumentCalculation = ReturnType<typeof calculateTaxBreakup>;
