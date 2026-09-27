@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Plus, Printer, Save, Trash2 } from "lucide-react";
 
-type Line = { description: string; quantity: number; rate: number };
+type Line = { description: string; quantity: number; rate: number; hsnSac: string; unit: string };
 type Settings = {
   companyName: string; address: string; email: string; phone: string; gstin: string;
   iec: string; bankName: string; bankAccount: string; bankIfsc: string; paymentTerms: string;
@@ -25,7 +25,7 @@ export function DocumentStudio({ type, settings }: { type: "Quotation" | "Invoic
   const [customerGstin, setCustomerGstin] = useState("");
   const [placeOfSupplyCode, setPlaceOfSupplyCode] = useState(settings.sellerStateCode);
   const [tax, setTax] = useState(Math.max(0, Number(settings.defaultTaxRate) || 0));
-  const [lines, setLines] = useState<Line[]>([{ description: "Professional service", quantity: 1, rate: 0 }]);
+  const [lines, setLines] = useState<Line[]>([{ description: "Professional service", quantity: 1, rate: 0, hsnSac: "", unit: "NOS" }]);
   const [saveMessage, setSaveMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
@@ -39,14 +39,14 @@ export function DocumentStudio({ type, settings }: { type: "Quotation" | "Invoic
 
   function update(index: number, key: keyof Line, value: string) {
     setLines((current) => current.map((line, row) => row === index
-      ? { ...line, [key]: key === "description" ? value : Math.max(0, Number(value) || 0) }
+      ? { ...line, [key]: key === "description" || key === "hsnSac" || key === "unit" ? value : Math.max(0, Number(value) || 0) }
       : line));
   }
 
   async function saveDocument() {
-    const cleanedLines = lines.map((line) => ({ ...line, description: line.description.trim() }));
-    if (!client.trim() || cleanedLines.some((line) => !line.description)) {
-      setSaveMessage("Add the customer name and a description for every line item.");
+    const cleanedLines = lines.map((line) => ({ ...line, description: line.description.trim(), hsnSac: line.hsnSac.trim().toUpperCase(), unit: line.unit.trim().toUpperCase() }));
+    if (!client.trim() || cleanedLines.some((line) => !line.description || !/^[A-Z0-9]{4,8}$/.test(line.hsnSac) || !line.unit)) {
+      setSaveMessage("Add customer name, description, valid HSN/SAC and unit for every line item.");
       return;
     }
     setIsSaving(true);
@@ -89,10 +89,12 @@ export function DocumentStudio({ type, settings }: { type: "Quotation" | "Invoic
           <input value={tax} onChange={(event) => setTax(Math.max(0, Number(event.target.value) || 0))} type="number" min="0" max="100" className="mt-2 w-full rounded-lg border border-slate-600 bg-slate-950 p-3 text-white" />
         </label>
         <div className="mb-3 flex items-center justify-between"><b>Line items</b>
-          <button type="button" onClick={() => setLines((current) => [...current, { description: "", quantity: 1, rate: 0 }])} className="flex items-center gap-1 rounded-lg bg-slate-700 px-3 py-2 text-sm"><Plus size={16} /> Add</button>
+          <button type="button" onClick={() => setLines((current) => [...current, { description: "", quantity: 1, rate: 0, hsnSac: "", unit: "NOS" }])} className="flex items-center gap-1 rounded-lg bg-slate-700 px-3 py-2 text-sm"><Plus size={16} /> Add</button>
         </div>
-        {lines.map((line, index) => <div className="mb-2 grid grid-cols-[1fr_58px_86px_28px] gap-2" key={index}>
-          <input aria-label="Description" value={line.description} onChange={(event) => update(index, "description", event.target.value)} className="rounded border border-slate-600 bg-slate-950 p-2" />
+        {lines.map((line, index) => <div className="mb-2 grid grid-cols-[minmax(120px,1fr)_80px_60px_58px_86px_28px] gap-2" key={index}>
+          <input aria-label="Description" placeholder="Description" value={line.description} onChange={(event) => update(index, "description", event.target.value)} className="rounded border border-slate-600 bg-slate-950 p-2" />
+          <input aria-label="HSN or SAC" placeholder="HSN/SAC" value={line.hsnSac} onChange={(event) => update(index, "hsnSac", event.target.value)} className="rounded border border-slate-600 bg-slate-950 p-2" />
+          <input aria-label="Unit" placeholder="Unit" value={line.unit} onChange={(event) => update(index, "unit", event.target.value)} className="rounded border border-slate-600 bg-slate-950 p-2" />
           <input aria-label="Quantity" value={line.quantity} onChange={(event) => update(index, "quantity", event.target.value)} type="number" min="0" className="rounded border border-slate-600 bg-slate-950 p-2" />
           <input aria-label="Rate" value={line.rate} onChange={(event) => update(index, "rate", event.target.value)} type="number" min="0" className="rounded border border-slate-600 bg-slate-950 p-2" />
           <button type="button" aria-label="Remove item" onClick={() => setLines((current) => current.length === 1 ? current : current.filter((_, row) => row !== index))} className="text-rose-300"><Trash2 size={17} /></button>
