@@ -13,8 +13,8 @@ export default async function Page() {
         {documents.length ? (
           <div className="mt-4 overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-slate-700 text-slate-400"><tr><th className="p-3">Date</th><th className="p-3">Customer</th><th className="p-3">Total</th></tr></thead>
-              <tbody>{documents.map((document, index) => <tr className="border-b border-slate-800" key={index}><td className="p-3">{document.createdAt ? new Date(document.createdAt).toLocaleDateString("en-IN") : "—"}</td><td className="p-3">{document.customer || "—"}</td><td className="p-3">₹{Number(document.total || 0).toLocaleString("en-IN")}</td></tr>)}</tbody>
+              <thead className="border-b border-slate-700 text-slate-400"><tr><th className="p-3">Reference</th><th className="p-3">Date</th><th className="p-3">Customer</th><th className="p-3">Total</th></tr></thead>
+              <tbody>{documents.map((document, index) => <tr className="border-b border-slate-800" key={index}><td className="p-3 font-medium">{document.reference || "—"}</td><td className="p-3">{document.createdAt ? new Date(document.createdAt).toLocaleDateString("en-IN") : "—"}</td><td className="p-3">{document.customer || "—"}</td><td className="p-3">₹{Number(document.total || 0).toLocaleString("en-IN")}</td></tr>)}</tbody>
             </table>
           </div>
         ) : <p className="mt-3 text-slate-400">Saved invoices will appear here.</p>}
