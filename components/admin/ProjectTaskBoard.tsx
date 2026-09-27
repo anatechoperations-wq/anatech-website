@@ -5,6 +5,7 @@ import { FormEvent, useState } from "react";
 const statuses = ["Not started", "In progress", "Blocked", "Completed"];
 
 type Project = { name: string };
+type Employee = { name: string };
 type Task = {
   row: number;
   project: string;
@@ -14,7 +15,7 @@ type Task = {
   status: string;
 };
 
-export function ProjectTaskBoard({ projects, initialTasks }: { projects: Project[]; initialTasks: Task[] }) {
+export function ProjectTaskBoard({ projects, initialTasks, employees }: { projects: Project[]; initialTasks: Task[]; employees: Employee[] }) {
   const [tasks, setTasks] = useState(initialTasks);
   const [isAdding, setIsAdding] = useState(false);
   const [saving, setSaving] = useState<number | null>(null);
@@ -91,7 +92,7 @@ export function ProjectTaskBoard({ projects, initialTasks }: { projects: Project
           <div className="grid gap-4 md:grid-cols-2">
             <label className="grid gap-2 text-sm text-slate-300">Project<select name="project" className="rounded-lg border border-slate-600 bg-slate-950 p-3 text-white" defaultValue="">{<><option value="" disabled>Select project</option>{projects.map((project) => <option key={project.name}>{project.name}</option>)}</>}</select></label>
             <label className="grid gap-2 text-sm text-slate-300">Task<input name="title" className="rounded-lg border border-slate-600 bg-slate-950 p-3 text-white" placeholder="e.g. Approve homepage content" /></label>
-            <label className="grid gap-2 text-sm text-slate-300">Owner<input name="owner" className="rounded-lg border border-slate-600 bg-slate-950 p-3 text-white" placeholder="Team member" /></label>
+            <label className="grid gap-2 text-sm text-slate-300">Owner<input name="owner" list="active-team-members" className="rounded-lg border border-slate-600 bg-slate-950 p-3 text-white" placeholder="Choose or enter team member" /><datalist id="active-team-members">{employees.map((employee) => <option key={employee.name} value={employee.name} />)}</datalist></label>
             <label className="grid gap-2 text-sm text-slate-300">Due date<input name="dueDate" type="date" className="rounded-lg border border-slate-600 bg-slate-950 p-3 text-white" /></label>
           </div>
           <button disabled={saving !== null} className="mt-5 rounded-lg bg-cyan-600 px-5 py-3 font-bold text-white disabled:opacity-60" type="submit">{saving === 0 ? "Saving..." : "Save task"}</button>
