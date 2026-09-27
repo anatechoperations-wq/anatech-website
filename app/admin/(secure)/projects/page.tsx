@@ -2,11 +2,12 @@ import { ProjectBoard } from "@/components/admin/ProjectBoard";
 import { ProjectTaskBoard } from "@/components/admin/ProjectTaskBoard";
 import { getCrmProjects } from "@/lib/admin-projects";
 import { getCrmTasks } from "@/lib/admin-tasks";
+import { getEmployees } from "@/lib/admin-employees";
 
 export const metadata = { title: "CRM Projects" };
 
 export default async function ProjectsPage() {
-  const [projects, tasks] = await Promise.all([getCrmProjects(), getCrmTasks()]);
+  const [projects, tasks, employees] = await Promise.all([getCrmProjects(), getCrmTasks(), getEmployees()]);
 
   return (
     <main className="mx-auto max-w-7xl p-8 text-slate-100">
@@ -16,7 +17,7 @@ export default async function ProjectsPage() {
         Start a project after a lead becomes a customer. Projects and delivery tasks are stored in the CRM Google Sheet.
       </p>
       <ProjectBoard initialProjects={projects} />
-      <ProjectTaskBoard projects={projects} initialTasks={tasks} />
+      <ProjectTaskBoard projects={projects} initialTasks={tasks} employees={employees.filter((employee) => employee.status === "Active")} />
     </main>
   );
 }
