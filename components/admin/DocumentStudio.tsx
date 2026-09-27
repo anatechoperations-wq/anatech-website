@@ -56,8 +56,8 @@ export function DocumentStudio({ type }: { type: "Quotation" | "Invoice" }) {
           lines: cleanedLines,
         }),
       });
-      const data = await response.json().catch(() => null) as { error?: string } | null;
-      setSaveMessage(response.ok ? "Saved securely in the CRM Google Sheet." : data?.error || "Could not save this document.");
+      const data = await response.json().catch(() => null) as { error?: string; reference?: string } | null;
+      setSaveMessage(response.ok ? "Saved to CRM. Reference: " + (data?.reference || "generated") : data?.error || "Could not save this document.");
     } catch {
       setSaveMessage("Could not reach the CRM document service.");
     } finally {
