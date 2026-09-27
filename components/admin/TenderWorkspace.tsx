@@ -1,0 +1,33 @@
+"use client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { boqStatuses, defaultTenderChecklist, tenderStatuses, type TenderRecord } from "@/lib/admin-tenders";
+
+export function TenderWorkspace({ tenders }: { tenders: TenderRecord[] }) {
+  const router = useRouter();
+  const [title, setTitle] = useState("");
+  const [reference, setReference] = useState("");
+  const [authority, setAuthority] = useState("");
+  const [portalUrl, setPortalUrl] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [emdAmount, setEmdAmount] = useState(0);
+  const [status, setStatus] = useState<typeof tenderStatuses[number]>("Documents pending");
+  const [boqStatus, setBoqStatus] = useState<typeof boqStatuses[number]>("Not received");
+  const [notes, setNotes] = useState("");
+  const [checklist, setChecklist] = useState<Record<string, boolean>>(() => Object.fromEntries(defaultTenderChecklist.map((item) => [item, false])));
+  const [message, setMessage] = useState("");
+  async function save() {
+    setMessage("Saving tender register…");
+    const response = await fetch("/api/admin/tenders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title, reference, authority, portalUrl, dueDate, emdAmount, status, boqStatus, notes, checklist }) });
+    const data = await response.json().catch(() => null) as { error?: string } | null;
+    if (!response.ok) { setMessage(data?.error || "Could not save tender."); return; }
+    setMessage("Tender saved. Review all documents before any portal submission.");
+    router.refresh();
+  }
+  return <div className="space-y-6">
+    <section><p className="text-sm font-semibold text-cyan-300">Tender workspace</p><h1 className="mt-1 text-3xl font-bold">e-Procurement readiness</h1><p className="mt-2 max-w-3xl text-slate-400">Maintain tender details, required documents and review status in one protected workspace. Portal submission remains a manual, authorised action.</p></section>
+    <section className="rounded-xl border border-amber-500/40 bg-amber-950/30 p-5 text-sm text-amber-100"><strong>BOQ safety:</strong> Keep the official BOQ template unchanged. Fill only the permitted bidder name and value cells, then verify the final file and any corrigendum before manual submission.</section>
+    <section className="rounded-xl border border-slate-700 bg-slate-900/70 p-6"><h2 className="text-xl font-bold">Add tender</h2><div className="mt-5 grid gap-4 md:grid-cols-2"><label>Title *<input value={title} onChange={e => setTitle(e.target.value)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" placeholder="Tender title" /></label><label>Tender reference<input value={reference} onChange={e => setReference(e.target.value)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" placeholder="Reference / tender ID" /></label><label>Issuing authority<input value={authority} onChange={e => setAuthority(e.target.value)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" placeholder="Department or organisation" /></label><label>Portal URL<input type="url" value={portalUrl} onChange={e => setPortalUrl(e.target.value)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" placeholder="https://…" /></label><label>Due date *<input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" /></label><label>EMD amount (₹)<input type="number" min="0" value={emdAmount} onChange={e => setEmdAmount(Math.max(0, Number(e.target.value) || 0))} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" /></label><label>Status<select value={status} onChange={e => setStatus(e.target.value as typeof status)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3">{tenderStatuses.map(item => <option key={item}>{item}</option>)}</select></label><label>BOQ status<select value={boqStatus} onChange={e => setBoqStatus(e.target.value as typeof boqStatus)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3">{boqStatuses.map(item => <option key={item}>{item}</option>)}</select></label></div><label className="mt-4 block">Internal notes<textarea value={notes} onChange={e => setNotes(e.target.value)} className="mt-2 min-h-24 w-full rounded border border-slate-600 bg-slate-950 p-3" placeholder="Scope, eligibility, review notes…" /></label><h3 className="mt-6 font-bold">Document readiness checklist</h3><div className="mt-3 grid gap-3 md:grid-cols-2">{defaultTenderChecklist.map(item => <label key={item} className="flex gap-3 rounded border border-slate-700 p-3 text-sm"><input type="checkbox" checked={checklist[item]} onChange={e => setChecklist(old => ({ ...old, [item]: e.target.checked }))} />{item}</label>)}</div><button type="button" onClick={save} className="mt-6 rounded-lg bg-cyan-600 px-5 py-3 font-bold">Save tender</button>{message && <p className="mt-3 text-sm text-cyan-200">{message}</p>}</section>
+    <section className="rounded-xl border border-slate-700 bg-slate-900/70 p-6"><h2 className="text-xl font-bold">Tender register</h2>{tenders.length ? <div className="mt-4 overflow-x-auto"><table className="w-full text-left text-sm"><thead className="text-slate-400"><tr><th className="p-2">Tender</th><th className="p-2">Due</th><th className="p-2">Status</th><th className="p-2">BOQ</th><th className="p-2">Checklist</th></tr></thead><tbody>{tenders.map((tender, index) => <tr key={tender.createdAt + index} className="border-t border-slate-800"><td className="p-2"><strong>{tender.title}</strong><br/><span className="text-slate-400">{tender.reference || "No reference"} · {tender.authority || "Authority pending"}</span></td><td className="p-2">{tender.dueDate}</td><td className="p-2">{tender.status}</td><td className="p-2">{tender.boqStatus}</td><td className="p-2">{Object.values(tender.checklist).filter(Boolean).length}/{defaultTenderChecklist.length}</td></tr>)}</tbody></table></div> : <p className="mt-3 text-slate-400">No tender has been added yet.</p>}</section>
+  </div>;
+}
