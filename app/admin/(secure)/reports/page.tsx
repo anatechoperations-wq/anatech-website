@@ -18,6 +18,6 @@ export default async function ReportsPage() {
         return <div className="mt-5 first:mt-4" key={status}><div className="mb-2 flex justify-between text-sm"><span>{status}</span><span className="text-slate-400">{count}</span></div><div className="h-2 rounded-full bg-slate-800"><div className="h-full rounded-full bg-gradient-to-r from-blue-600 to-cyan-400" style={{ width: width + "%" }} /></div></div>;
       })}
     </section>
-    <GstComplianceRegister initialReport={gstReport} />
+    <GstComplianceRegister report={gstReport} />
   </main>;
 }
