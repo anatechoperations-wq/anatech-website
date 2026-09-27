@@ -7,7 +7,7 @@ export function GstComplianceRegister({ report }: { report: GstComplianceReport 
   return <section className="mt-8 rounded-xl border border-slate-700 bg-slate-900/70 p-6">
     <div className="flex flex-wrap items-end justify-between gap-4">
       <div><p className="text-xs font-bold tracking-[.15em] text-cyan-300">GST COMPLIANCE</p><h2 className="mt-1 text-2xl font-black">Monthly sales register</h2><p className="mt-1 text-sm text-slate-400">Period: {report.period}</p></div>
-      <a href={"/api/admin/reports/gst?format=csv&period=" + encodeURIComponent(report.period)} className="flex items-center gap-2 rounded-lg bg-cyan-600 px-4 py-2.5 text-sm font-bold"><Download size={16} />Download CSV</a>
+      <div className="flex gap-2"><a href={"/api/admin/reports/gst?format=csv&period=" + encodeURIComponent(report.period)} className="flex items-center gap-2 rounded-lg bg-cyan-600 px-4 py-2.5 text-sm font-bold"><Download size={16} />Sales CSV</a><a href={"/api/admin/reports/gstr1-review?period=" + encodeURIComponent(report.period)} className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-bold"><Download size={16} />GSTR-1 review JSON</a></div>
     </div>
     <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
       {[["Taxable sales", report.totalTaxableValue], ["CGST", report.totalCgst], ["KGST", report.totalKgst], ["IGST", report.totalIgst]].map(([label, value]) => <div className="rounded-lg border border-slate-700 bg-slate-950/60 p-4" key={String(label)}><p className="text-xs text-slate-400">{label}</p><p className="mt-1 text-xl font-black">{money(Number(value))}</p></div>)}
