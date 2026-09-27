@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Download, RefreshCw } from "lucide-react";
-import type { GstComplianceReport } from "@/lib/admin-gst-reports";
+import type { GstComplianceReport } from "@/lib/gst-types";
 
 const money = (value: number) => "₹" + value.toLocaleString("en-IN", { maximumFractionDigits: 2 });
 
