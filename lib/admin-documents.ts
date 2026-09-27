@@ -1,27 +1,20 @@
 import "server-only";
 
 import { google } from "googleapis";
+import { calculateTaxBreakup, getMasterSettings, type MasterSettings } from "@/lib/admin-master-settings";
 
 export type CrmDocumentType = "Quotation" | "Invoice";
 
 export type CrmDocumentInput = {
   type: CrmDocumentType;
   customer: string;
+  customerGstin: string;
+  placeOfSupplyCode: string;
   taxRate: number;
-  subtotal: number;
-  taxAmount: number;
-  total: number;
   lines: Array<{ description: string; quantity: number; rate: number }>;
 };
 
-export type BusinessDocumentSettings = {
-  gstin: string;
-  iec: string;
-  bankName: string;
-  bankAccount: string;
-  bankIfsc: string;
-  paymentTerms: string;
-};
+export type DocumentCalculation = ReturnType<typeof calculateTaxBreakup>;
 
 const SHEET_NAME = "CRM Documents";
 
@@ -36,17 +29,6 @@ function getAuth() {
   });
 }
 
-export function getBusinessDocumentSettings(): BusinessDocumentSettings {
-  return {
-    gstin: process.env.COMPANY_GSTIN || "",
-    iec: process.env.COMPANY_IEC || "",
-    bankName: process.env.COMPANY_BANK_NAME || "",
-    bankAccount: process.env.COMPANY_BANK_ACCOUNT || "",
-    bankIfsc: process.env.COMPANY_BANK_IFSC || "",
-    paymentTerms: process.env.DOCUMENT_PAYMENT_TERMS || "Payment terms to be confirmed with the customer.",
-  };
-}
-
 async function ensureDocumentSheet() {
   if (!process.env.GOOGLE_SHEET_ID) throw new Error("GOOGLE_SHEET_ID is missing.");
 
@@ -56,68 +38,70 @@ async function ensureDocumentSheet() {
     fields: "sheets.properties",
   });
   const exists = spreadsheet.data.sheets?.some((sheet) => sheet.properties?.title === SHEET_NAME);
+  const headers = [
+    "Created at", "Document type", "Customer", "Customer GSTIN", "Place of supply",
+    "Supply type", "Subtotal", "GST rate", "CGST", "KGST", "IGST", "Total",
+    "Line items", "Document reference", "Payment terms", "Seller GSTIN",
+  ];
 
   if (!exists) {
     await sheets.spreadsheets.batchUpdate({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
       requestBody: { requests: [{ addSheet: { properties: { title: SHEET_NAME } } }] },
     });
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: "'" + SHEET_NAME + "'!A1:J1",
-      valueInputOption: "USER_ENTERED",
-      requestBody: { values: [[
-        "Created at", "Document type", "Customer", "Subtotal", "GST rate",
-        "GST amount", "Total", "Line items", "Document reference", "Payment terms",
-      ]] },
-    });
-  } else {
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: "'" + SHEET_NAME + "'!I1:J1",
-      valueInputOption: "USER_ENTERED",
-      requestBody: { values: [["Document reference", "Payment terms"]] },
-    });
   }
-
+  await sheets.spreadsheets.values.update({
+    spreadsheetId: process.env.GOOGLE_SHEET_ID,
+    range: "'" + SHEET_NAME + "'!A1:P1",
+    valueInputOption: "USER_ENTERED",
+    requestBody: { values: [headers] },
+  });
   return sheets;
 }
 
-function prefixFor(type: CrmDocumentType) {
-  return type === "Quotation"
-    ? (process.env.DOCUMENT_QUOTATION_PREFIX || "QTN")
-    : (process.env.DOCUMENT_INVOICE_PREFIX || "INV");
+function prefixFor(type: CrmDocumentType, settings: MasterSettings) {
+  return type === "Quotation" ? settings.quotationPrefix || "QTN" : settings.invoicePrefix || "INV";
 }
 
-async function nextReference(sheets: ReturnType<typeof google.sheets>, type: CrmDocumentType) {
+async function nextReference(sheets: ReturnType<typeof google.sheets>, type: CrmDocumentType, settings: MasterSettings) {
   const year = new Date().getFullYear();
   const result = await sheets.spreadsheets.values.get({
     spreadsheetId: process.env.GOOGLE_SHEET_ID!,
-    range: "'" + SHEET_NAME + "'!A2:I",
+    range: "'" + SHEET_NAME + "'!A2:N",
   });
   const count = (result.data.values ?? []).filter((row) =>
     String(row[0] ?? "").startsWith(String(year)) && String(row[1] ?? "") === type,
   ).length;
-  return prefixFor(type) + "-" + year + "-" + String(count + 1).padStart(4, "0");
+  return prefixFor(type, settings) + "-" + year + "-" + String(count + 1).padStart(4, "0");
+}
+
+function subtotalFromLines(lines: CrmDocumentInput["lines"]) {
+  return Math.round(lines.reduce((sum, line) => sum + line.quantity * line.rate, 0) * 100) / 100;
 }
 
 export async function saveCrmDocument(document: CrmDocumentInput) {
-  const sheets = await ensureDocumentSheet();
-  const reference = await nextReference(sheets, document.type);
-  const settings = getBusinessDocumentSettings();
+  const [sheets, settings] = await Promise.all([ensureDocumentSheet(), getMasterSettings()]);
+  const reference = await nextReference(sheets, document.type, settings);
+  const calculation = calculateTaxBreakup({
+    subtotal: subtotalFromLines(document.lines),
+    taxRate: document.taxRate,
+    sellerStateCode: settings.sellerStateCode,
+    placeOfSupplyCode: document.placeOfSupplyCode,
+  });
 
   await sheets.spreadsheets.values.append({
     spreadsheetId: process.env.GOOGLE_SHEET_ID!,
-    range: "'" + SHEET_NAME + "'!A:J",
+    range: "'" + SHEET_NAME + "'!A:P",
     valueInputOption: "USER_ENTERED",
     insertDataOption: "INSERT_ROWS",
     requestBody: { values: [[
-      new Date().toISOString(), document.type, document.customer, document.subtotal,
-      document.taxRate, document.taxAmount, document.total, JSON.stringify(document.lines),
-      reference, settings.paymentTerms,
+      new Date().toISOString(), document.type, document.customer, document.customerGstin,
+      document.placeOfSupplyCode, calculation.supplyType, calculation.subtotal, calculation.taxRate,
+      calculation.cgst, calculation.kgst, calculation.igst, calculation.total,
+      JSON.stringify(document.lines), reference, settings.paymentTerms, settings.gstin,
     ]] },
   });
-  return reference;
+  return { reference, calculation };
 }
 
 export type SavedCrmDocument = {
@@ -126,6 +110,7 @@ export type SavedCrmDocument = {
   customer: string;
   total: string;
   reference: string;
+  supplyType: string;
 };
 
 export async function getCrmDocuments(type: CrmDocumentType): Promise<SavedCrmDocument[]> {
@@ -139,7 +124,7 @@ export async function getCrmDocuments(type: CrmDocumentType): Promise<SavedCrmDo
     if (!spreadsheet.data.sheets?.some((sheet) => sheet.properties?.title === SHEET_NAME)) return [];
     const result = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: "'" + SHEET_NAME + "'!A2:J",
+      range: "'" + SHEET_NAME + "'!A2:P",
     });
     return (result.data.values ?? [])
       .filter((row) => row[1] === type)
@@ -147,8 +132,9 @@ export async function getCrmDocuments(type: CrmDocumentType): Promise<SavedCrmDo
         createdAt: String(row[0] ?? ""),
         type,
         customer: String(row[2] ?? ""),
-        total: String(row[6] ?? ""),
-        reference: String(row[8] ?? ""),
+        total: String(row[11] ?? row[6] ?? ""),
+        reference: String(row[13] ?? row[8] ?? ""),
+        supplyType: String(row[5] ?? ""),
       }))
       .reverse();
   } catch (error) {
