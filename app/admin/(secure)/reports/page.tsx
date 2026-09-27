@@ -2,7 +2,8 @@ import { GstComplianceRegister } from "@/components/admin/GstComplianceRegister"
 import { getGstComplianceReport } from "@/lib/admin-gst-reports";
 import { getLeads } from "@/lib/admin-leads";
 
-export const dynamic = "force-dynamic";\nexport const metadata = { title: "CRM Reports" };
+export const dynamic = "force-dynamic";
+export const metadata = { title: "CRM Reports" };
 const statuses = ["New", "Contacted", "Interested", "Proposal Sent", "Negotiation", "Won", "Lost"] as const;
 
 export default async function ReportsPage() {
