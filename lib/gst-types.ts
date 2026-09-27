@@ -11,6 +11,7 @@ export type GstRegisterRow = {
   kgst: number;
   igst: number;
   total: number;
+  lines: Array<{ description?: string; quantity?: number; rate?: number; hsnSac?: string; unit?: string }>;
   category: "B2B" | "B2C";
 };
 
