@@ -84,10 +84,11 @@ export async function getGstComplianceReport(period = defaultPeriod()): Promise<
           kgst: validNumber(row[9]),
           igst: validNumber(row[10]),
           total: validNumber(row[11]),
+          lines: (() => { try { const parsed = JSON.parse(String(row[12] ?? "[]")); return Array.isArray(parsed) ? parsed : []; } catch { return []; } })(),
           category: customerGstin.length === 15 ? "B2B" : "B2C",
         };
         const incomplete = !rowData.reference || !rowData.customer || !rowData.placeOfSupply ||
-          !rowData.supplyType || rowData.taxableValue < 0 || (customerGstin.length > 0 && customerGstin.length !== 15);
+          !rowData.supplyType || !rowData.lines.length || rowData.lines.some((line) => !line.hsnSac || !line.unit) || rowData.taxableValue < 0 || (customerGstin.length > 0 && customerGstin.length !== 15);
         if (incomplete) report.incompleteRows += 1;
         return rowData;
       });
