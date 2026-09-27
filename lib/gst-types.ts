@@ -29,4 +29,8 @@ export type GstComplianceReport = {
   incompleteRows: number;
   companyGstinConfigured: boolean;
   filingReadiness: string[];
+  creditNotes: { taxable: number; cgst: number; kgst: number; igst: number; total: number; count: number };
+  netTaxableValue: number;
+  netTax: number;
+  netInvoiceValue: number;
 };
