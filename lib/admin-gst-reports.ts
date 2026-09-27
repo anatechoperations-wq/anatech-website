@@ -5,7 +5,9 @@ import { getMasterSettings } from "@/lib/admin-master-settings";
 
 const SHEET_NAME = "CRM Documents";
 
-import type { GstComplianceReport, GstRegisterRow } from "@/lib/gst-types";\n\nfunction getAuth() {
+import type { GstComplianceReport, GstRegisterRow } from "@/lib/gst-types";
+
+function getAuth() {
   return new google.auth.GoogleAuth({
     credentials: {
       project_id: process.env.GOOGLE_PROJECT_ID,
