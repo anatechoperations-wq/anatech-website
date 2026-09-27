@@ -2,10 +2,9 @@ import "server-only";
 
 import { google } from "googleapis";
 import { getMasterSettings } from "@/lib/admin-master-settings";
+import type { GstComplianceReport, GstRegisterRow } from "@/lib/gst-types";
 
 const SHEET_NAME = "CRM Documents";
-
-import type { GstComplianceReport, GstRegisterRow } from "@/lib/gst-types";
 
 function getAuth() {
   return new google.auth.GoogleAuth({
