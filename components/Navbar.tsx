@@ -15,26 +15,14 @@ import {
 } from "lucide-react";
 
 const serviceLinks = [
-  {
-    name: "Web Development",
-    href: "/services/web-development",
-  },
-  {
-    name: "AI Solutions",
-    href: "/services/ai-solutions",
-  },
-  {
-    name: "Software Development",
-    href: "/services/software-development",
-  },
-  {
-    name: "Business Consultancy",
-    href: "/services/business-consultancy",
-  },
-  //{
-  //  name: "Business Consultancy",
-  //  href: "/services/business-consultancy",
- // }, 
+  { name: "Web Development", href: "/services/web-development" },
+  { name: "AI Solutions", href: "/services/ai-solutions" },
+  { name: "Software Development", href: "/services/software-development" },
+  { name: "Digital Media", href: "/services/digital-media" },
+  { name: "Import & Export", href: "/services/import-export" },
+  { name: "Business Consultancy", href: "/services/business-consultancy" },
+  { name: "Government e-Services", href: "/services/government-e-services" },
+  { name: "Training & Academy", href: "/services/training-academy" },
 ];
 
 const navLinkClass =

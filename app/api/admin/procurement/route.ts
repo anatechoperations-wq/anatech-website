@@ -1,0 +1,16 @@
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
+import { SESSION_COOKIE, verifyAdminSession } from "@/lib/admin-auth";
+import { assetStatuses, createAsset, createPurchase, createVendor, purchaseStatuses, type AssetStatus, type PurchaseStatus } from "@/lib/admin-procurement";
+
+export async function POST(request: Request) {
+  if (!await verifyAdminSession((await cookies()).get(SESSION_COOKIE)?.value)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const body = await request.json().catch(() => null) as Record<string, unknown> | null;
+  if (!body || typeof body.kind !== "string") return NextResponse.json({ error: "Invalid procurement request." }, { status: 400 });
+  try {
+    if (body.kind === "vendor" && typeof body.name === "string" && body.name.trim() && typeof body.category === "string" && typeof body.contact === "string" && typeof body.email === "string" && typeof body.phone === "string" && typeof body.gstin === "string" && typeof body.notes === "string") return NextResponse.json({ ok:true, ...(await createVendor({ name:body.name.trim(),category:body.category.trim(),contact:body.contact.trim(),email:body.email.trim(),phone:body.phone.trim(),gstin:body.gstin.trim(),notes:body.notes.trim() })) });
+    if (body.kind === "purchase" && typeof body.vendor === "string" && typeof body.item === "string" && body.item.trim() && typeof body.category === "string" && typeof body.project === "string" && typeof body.quantity === "number" && body.quantity > 0 && typeof body.unitCost === "number" && body.unitCost >= 0 && typeof body.status === "string" && purchaseStatuses.includes(body.status as PurchaseStatus) && typeof body.expectedDate === "string" && /^\\d{4}-\\d{2}-\\d{2}$/.test(body.expectedDate) && typeof body.notes === "string") return NextResponse.json({ ok:true, ...(await createPurchase({ vendor:body.vendor.trim(),item:body.item.trim(),category:body.category.trim(),project:body.project.trim(),quantity:body.quantity,unitCost:body.unitCost,status:body.status as PurchaseStatus,expectedDate:body.expectedDate,notes:body.notes.trim() })) });
+    if (body.kind === "asset" && typeof body.name === "string" && body.name.trim() && typeof body.category === "string" && typeof body.serialNo === "string" && typeof body.purchaseRef === "string" && typeof body.location === "string" && typeof body.assignedTo === "string" && typeof body.warrantyUntil === "string" && (!body.warrantyUntil || /^\\d{4}-\\d{2}-\\d{2}$/.test(body.warrantyUntil)) && typeof body.status === "string" && assetStatuses.includes(body.status as AssetStatus) && typeof body.notes === "string") return NextResponse.json({ ok:true, ...(await createAsset({ name:body.name.trim(),category:body.category.trim(),serialNo:body.serialNo.trim(),purchaseRef:body.purchaseRef.trim(),location:body.location.trim(),assignedTo:body.assignedTo.trim(),warrantyUntil:body.warrantyUntil,status:body.status as AssetStatus,notes:body.notes.trim() })) });
+    return NextResponse.json({ error: "Please complete the details correctly." }, { status: 400 });
+  } catch { return NextResponse.json({ error: "Could not save procurement record. Confirm Google Sheets access." }, { status: 500 }); }
+}
