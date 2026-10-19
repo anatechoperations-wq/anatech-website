@@ -12,14 +12,13 @@ import {
   ShoppingCart,
   Globe,
   LayoutDashboard,
-  Package,
   Receipt,
 } from "lucide-react";
 
 const words = [
-  "Billing & Stock Software",
-  "Online Shopping Cart",
-  "Professional Website",
+  "Business Software",
+  "Shopping Cart",
+  "Business Website",
 ];
 
 const chips = [
@@ -55,7 +54,7 @@ function RotatingWord() {
   }, [reduce]);
 
   return (
-    <span className="relative mt-2 block h-[1.3em] overflow-hidden whitespace-nowrap text-3xl md:text-4xl lg:text-5xl">
+    <span className="relative mt-2 block h-[1.4em] overflow-hidden whitespace-nowrap text-3xl md:text-4xl lg:text-5xl">
       <AnimatePresence mode="wait">
         <motion.span
           key={i}
@@ -183,7 +182,7 @@ function DashboardPreview() {
           </span>
         </div>
 
-        <div className="p-5">
+        <div className="p-5 sm:pb-14">
           <div className="flex items-end justify-between">
             <div>
               <p className="text-xs text-slate-500">Today&apos;s sales</p>
@@ -234,7 +233,7 @@ function DashboardPreview() {
         </div>
       </div>
 
-      <FloatCard className="-left-6 top-20" delay={1.4}>
+      <FloatCard className="-top-6 right-4" delay={1.4}>
         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-green-600">
           <Receipt className="h-5 w-5" />
         </span>
@@ -244,7 +243,7 @@ function DashboardPreview() {
         </div>
       </FloatCard>
 
-      <FloatCard className="-right-6 top-44" delay={1.8}>
+      <FloatCard className="-bottom-5 left-4" delay={1.8}>
         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
           <ShoppingCart className="h-5 w-5" />
         </span>
@@ -254,23 +253,13 @@ function DashboardPreview() {
         </div>
       </FloatCard>
 
-      <FloatCard className="-bottom-6 left-10" delay={2.2}>
+      <FloatCard className="-bottom-5 right-4" delay={2.2}>
         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-100 text-cyan-700">
           <Globe className="h-5 w-5" />
         </span>
         <div>
           <p className="text-sm font-bold text-slate-900">Website live</p>
           <p className="text-xs text-slate-500">Mobile friendly</p>
-        </div>
-      </FloatCard>
-
-      <FloatCard className="-bottom-4 right-6" delay={2.6}>
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-100 text-red-600">
-          <Package className="h-5 w-5" />
-        </span>
-        <div>
-          <p className="text-sm font-bold text-slate-900">Low stock</p>
-          <p className="text-xs text-slate-500">Coconut oil</p>
         </div>
       </FloatCard>
     </div>
