@@ -164,7 +164,7 @@ export default function Footer() {
                 <Phone className="text-blue-400 mt-1" size={18} />
 
                 <a
-                  href="tel:+918921520858"
+                  href="tel:+919074262344"
                   className="hover:text-blue-400 transition"
                 >
                   +91 89215 20858
