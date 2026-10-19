@@ -176,7 +176,7 @@ const handleSubmit = async (
                   href="tel:+919074262344"
                   className="text-gray-300 hover:text-blue-400 transition"
                 >
-                  +91 89215 20858
+                  +91 90742 62344
                 </a>
 
               </div>
