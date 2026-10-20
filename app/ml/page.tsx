@@ -26,7 +26,7 @@ export default function MalayalamPage() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_15%,rgba(37,99,235,.38),transparent_30%)]" />
       <div className="relative mx-auto max-w-6xl">
         <p className="text-sm font-bold tracking-wide text-cyan-300">കൊല്ലം · കേരളം · ഇന്ത്യ</p>
-        <h1 className="mt-5 max-w-3xl text-4xl font-black leading-tight md:text-6xl">നിങ്ങളുടെ ബിസിനസ്സ് <span className="text-cyan-300">ഡിജിറ്റൽ</span> ആക്കാം</h1>
+        <h1 className="mt-5 max-w-3xl text-4xl font-black leading-tight md:text-5xl lg:text-6xl">നിങ്ങളുടെ ബിസിനസ്സ് <span className="text-cyan-300">ഡിജിറ്റൽ</span> ആക്കാം</h1>
         <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">നിങ്ങളുടെ ബിസിനസിന്റെ പ്രവർത്തനരീതിക്ക് അനുസരിച്ച് സോഫ്റ്റ്‌വെയർ, ഓൺലൈൻ ഷോപ്പിംഗ് കാർട്ട്, പ്രൊഫഷണൽ വെബ്സൈറ്റ് എന്നിവ തയ്യാറാക്കുന്നു.</p>
         <div className="mt-9 flex flex-wrap gap-4">
           <a href="https://wa.me/919074262344?text=%E0%B4%A8%E0%B4%AE%E0%B4%B8%E0%B5%8D%E0%B4%95%E0%B4%BE%E0%B4%B0%E0%B4%82%2C%20%E0%B4%8E%E0%B4%A8%E0%B5%8D%E0%B4%B1%E0%B5%86%20%E0%B4%AC%E0%B4%BF%E0%B4%B8%E0%B4%BF%E0%B4%A8%E0%B4%B8%E0%B5%8D%E0%B4%B8%E0%B4%BF%E0%B4%A8%E0%B5%8D%20%E0%B4%A1%E0%B4%BF%E0%B4%9C%E0%B4%BF%E0%B4%B1%E0%B5%8D%E0%B4%B1%E0%B5%BD%20%E0%B4%AA%E0%B4%B0%E0%B4%BF%E0%B4%B9%E0%B4%BE%E0%B4%B0%E0%B4%82%20%E0%B4%B5%E0%B5%87%E0%B4%A3%E0%B4%82." target="_blank" rel="noreferrer" className="rounded-xl bg-emerald-500 px-6 py-3 font-bold text-emerald-950 transition hover:bg-emerald-400">WhatsApp-ൽ ബന്ധപ്പെടൂ</a>
