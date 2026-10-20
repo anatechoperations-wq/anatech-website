@@ -87,6 +87,10 @@ export const metadata: Metadata = {
 
   alternates: {
     canonical: "https://www.anatechsolutions.in",
+    languages: {
+      en: "https://www.anatechsolutions.in",
+      ml: "https://www.anatechsolutions.in/ml",
+    },
   },
 
   openGraph: {
