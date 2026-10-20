@@ -44,7 +44,7 @@ export default function MalayalamPage() {
       <div className="mx-auto max-w-6xl rounded-3xl bg-blue-700 p-8 text-white md:p-12">
         <p className="text-sm font-bold text-cyan-200">എങ്ങനെ തുടങ്ങാം?</p>
         <div className="mt-6 grid gap-6 md:grid-cols-3"><div><b>1. വിവരങ്ങൾ അയക്കൂ</b><p className="mt-2 text-blue-100">നിങ്ങളുടെ ബിസിനസ്സും ആവശ്യവും WhatsApp-ൽ പറയുക.</p></div><div><b>2. ഡെമോ കാണൂ</b><p className="mt-2 text-blue-100">നിങ്ങൾക്ക് അനുയോജ്യമായ പരിഹാരവും പ്രവൃത്തി രീതിയും മനസ്സിലാക്കുക.</p></div><div><b>3. തീരുമാനിക്കൂ</b><p className="mt-2 text-blue-100">വ്യക്തമായ scope, സമയം, വില എന്നിവ അംഗീകരിച്ച ശേഷം മാത്രം മുന്നോട്ട് പോകാം.</p></div></div>
-        <a href="/ml/contact" className="mt-8 inline-flex rounded-xl bg-white px-6 py-3 font-bold text-blue-800">Enquiry അയക്കൂ</Link>
+        <Link href="/ml/contact" className="mt-8 inline-flex rounded-xl bg-white px-6 py-3 font-bold text-blue-800">Enquiry അയക്കൂ</Link>
       </div>
     </section>
     <footer className="px-6 py-10 text-center text-sm text-slate-500">© {new Date().getFullYear()} ANATECH Technology Solutions · കൊല്ലം, കേരളം</footer>
