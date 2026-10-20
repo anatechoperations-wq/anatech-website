@@ -12,7 +12,7 @@ import BusinessProcess from "@/components/services/BusinessProcess";
 
 export const metadata: Metadata = {
   title:
-    "Business Consultancy Services | ANATECH Technology Solutions",
+    "Business Consultancy Services",
 
   description:
     "Professional business consultancy services for startups, MSMEs, enterprises and organizations.",
