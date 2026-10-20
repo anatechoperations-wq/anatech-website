@@ -25,7 +25,7 @@ export const DEFAULT_MASTER_SETTINGS: MasterSettings = {
   companyName: "ANATECH Technology Solutions",
   address: "Kollam, Kerala, India",
   email: "anatech.operations@gmail.com",
-  phone: "+91 89215 20858",
+  phone: "+91 90742 62344",
   gstin: process.env.COMPANY_GSTIN || "",
   iec: process.env.COMPANY_IEC || "",
   bankName: process.env.COMPANY_BANK_NAME || "",
