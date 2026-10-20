@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   MonitorSmartphone,
@@ -20,6 +21,7 @@ const services = [
     description:
       "Complete IT solutions for businesses, organizations and institutions.",
     color: "from-blue-600 to-cyan-500",
+    href: "/services/web-development",
     features: [
       "Website Development",
       "Custom Software",
@@ -33,6 +35,7 @@ const services = [
     description:
       "Artificial Intelligence solutions that automate and accelerate business growth.",
     color: "from-cyan-600 to-sky-500",
+    href: "/services/ai-solutions",
     features: [
       "AI Chatbots",
       "Business Automation",
@@ -46,6 +49,7 @@ const services = [
     description:
       "Creative branding and digital marketing services for modern businesses.",
     color: "from-indigo-600 to-blue-600",
+    href: "/services/digital-media",
     features: [
       "Graphic Design",
       "Brand Identity",
@@ -59,6 +63,7 @@ const services = [
     description:
       "Professional support for international trade documentation and business expansion.",
     color: "from-blue-700 to-indigo-600",
+    href: "/services/import-export",
     features: [
       "IEC Assistance",
       "Trade Documentation",
@@ -72,6 +77,7 @@ const services = [
     description:
       "Strategic consulting services to improve business performance and growth.",
     color: "from-sky-600 to-cyan-600",
+    href: "/services/business-consultancy",
     features: [
       "MSME Support",
       "Startup Guidance",
@@ -85,6 +91,7 @@ const services = [
     description:
       "Professional assistance for various government digital services and portals.",
     color: "from-blue-600 to-slate-700",
+    href: "/services/government-e-services",
     features: [
       "GST Assistance",
       "Digital Signature",
@@ -98,6 +105,7 @@ const services = [
     description:
       "Professional technology training programs for students and businesses.",
     color: "from-cyan-600 to-blue-700",
+    href: "/services/training-academy",
     features: [
       "AI Training",
       "Software Training",
@@ -201,11 +209,13 @@ export default function Services() {
                 {/* Learn More Button */}
 
                 <div className="mt-8">
-                  <button className="inline-flex items-center gap-2 text-blue-400 font-semibold transition-all duration-300 group-hover:text-cyan-300">
+                  <Link
+                    href={service.href}
+                    className="inline-flex items-center gap-2 text-blue-400 font-semibold transition-all duration-300 group-hover:text-cyan-300"
+                  >
                     Learn More
-
                     <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </button>
+                  </Link>
                 </div>
 
               </motion.div>

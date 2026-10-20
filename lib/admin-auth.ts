@@ -1,0 +1,9 @@
+const encoder = new TextEncoder();
+export const SESSION_COOKIE = "anatech_admin_session";
+export type AdminSession = { email: string; role: "admin" };
+function secret() { const value = process.env.AUTH_SECRET; if (!value || value.length < 32) throw new Error("AUTH_SECRET must contain at least 32 characters."); return encoder.encode(value); }
+function base64Url(bytes: Uint8Array) { return btoa(String.fromCharCode(...bytes)).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_"); }
+function decodeBase64Url(value: string) { const padded = value.replace(/-/g, "+").replace(/_/g, "/") + "=".repeat((4 - value.length % 4) % 4); return Uint8Array.from(atob(padded), character => character.charCodeAt(0)); }
+async function sign(value: string) { const key = await crypto.subtle.importKey("raw", secret(), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]); return base64Url(new Uint8Array(await crypto.subtle.sign("HMAC", key, encoder.encode(value)))); }
+export async function createAdminSession(email: string) { const header = base64Url(encoder.encode(JSON.stringify({ alg: "HS256", typ: "JWT" }))); const payload = base64Url(encoder.encode(JSON.stringify({ sub: email, role: "admin", iat: Math.floor(Date.now() / 1000), exp: Math.floor(Date.now() / 1000) + 60 * 60 * 8 }))); return `${header}.${payload}.${await sign(`${header}.${payload}`)}`; }
+export async function verifyAdminSession(token?: string): Promise<AdminSession | null> { if (!token) return null; try { const [header, payload, signature] = token.split("."); if (!header || !payload || !signature || signature !== await sign(`${header}.${payload}`)) return null; const data = JSON.parse(new TextDecoder().decode(decodeBase64Url(payload))) as { sub?: unknown; role?: unknown; exp?: unknown }; return typeof data.sub === "string" && data.role === "admin" && typeof data.exp === "number" && data.exp > Math.floor(Date.now() / 1000) ? { email: data.sub, role: "admin" } : null; } catch { return null; } }
