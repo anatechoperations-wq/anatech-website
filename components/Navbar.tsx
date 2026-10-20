@@ -208,6 +208,10 @@ export default function Navbar() {
             Contact
           </a>
 
+          <Link href="/ml" lang="ml" className={navLinkClass}>
+            മലയാളം
+          </Link>
+
         </nav>
 
         {/* Desktop CTA */}
@@ -310,6 +314,15 @@ export default function Navbar() {
             >
               Contact
             </a>
+
+            <Link
+              href="/ml"
+              lang="ml"
+              onClick={() => setIsOpen(false)}
+              className="block px-6 py-4 font-semibold text-blue-700 transition hover:bg-blue-50"
+            >
+              മലയാളം
+            </Link>
 
             <div className="p-4">
 
