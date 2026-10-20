@@ -7,7 +7,7 @@ import AIOverview from "@/components/services/AIOverview";
 import ServiceLayout from "@/components/layouts/ServiceLayout";
 
 export const metadata: Metadata = {
-  title: "AI Solutions | ANATECH Technology Solutions",
+  title: "AI Solutions",
   description:
     "Enterprise Artificial Intelligence solutions including AI automation, chatbots, workflow optimization and business intelligence.",
   alternates: {
