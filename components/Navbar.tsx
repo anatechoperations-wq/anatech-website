@@ -26,7 +26,7 @@ const serviceLinks = [
 ];
 
 const navLinkClass =
-  "relative text-gray-300 transition-all duration-300 hover:text-white after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-cyan-400 after:transition-all after:duration-300 hover:after:w-full";
+  "relative text-slate-600 transition-all duration-300 hover:text-blue-700 after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-blue-600 after:transition-all after:duration-300 hover:after:w-full";
 
 export default function Navbar() {
   const { scrollY } = useScroll();
@@ -50,13 +50,17 @@ export default function Navbar() {
         height: small ? 72 : 90,
 
         backgroundColor: small
-          ? "rgba(2,6,23,.95)"
-          : "rgba(2,6,23,.80)",
+          ? "rgba(255,255,255,.97)"
+          : "rgba(255,255,255,.85)",
+
+        boxShadow: small
+          ? "0 4px 20px rgba(15,23,42,0.08)"
+          : "0 0 0 rgba(15,23,42,0)",
       }}
       transition={{
         duration: 0.3,
       }}
-      className="fixed inset-x-0 top-0 z-50 border-b border-blue-900/30 backdrop-blur-xl"
+      className="fixed inset-x-0 top-0 z-50 border-b border-slate-200 backdrop-blur-xl"
     >
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6 lg:px-8">
 
@@ -84,13 +88,13 @@ export default function Navbar() {
 
             <div>
 
-              <h1 className="text-xl font-bold text-white">
+              <p className="text-xl font-bold text-slate-900">
 
                 ANATECH
 
-              </h1>
+              </p>
 
-              <p className="text-[10px] tracking-[4px] text-blue-400">
+              <p className="text-[10px] tracking-[4px] text-blue-600">
 
                 TECHNOLOGY SOLUTIONS
 
@@ -164,14 +168,14 @@ export default function Navbar() {
                   transition={{
                     duration: 0.2,
                   }}
-                  className="absolute left-0 top-full mt-4 w-72 overflow-hidden rounded-2xl border border-slate-700 bg-slate-900/95 shadow-2xl backdrop-blur-xl"
+                  className="absolute left-0 top-full mt-4 w-72 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl"
                 >
                   {serviceLinks.map(
                     (service) => (
                       <Link
                         key={service.name}
                         href={service.href}
-                        className="block border-b border-slate-800 px-6 py-4 text-gray-300 transition-all duration-300 hover:bg-slate-800 hover:text-cyan-400 last:border-none"
+                        className="block border-b border-slate-100 px-6 py-4 text-slate-700 transition-all duration-300 hover:bg-blue-50 hover:text-blue-700 last:border-none"
                       >
                         {service.name}
                       </Link>
@@ -216,7 +220,7 @@ export default function Navbar() {
             scale: 0.96,
           }}
           href="/#contact"
-          className="hidden rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700 md:block"
+          className="hidden rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white shadow-md shadow-blue-600/20 transition hover:bg-blue-700 md:block"
         >
           Get Started
         </motion.a>
@@ -225,7 +229,7 @@ export default function Navbar() {
 
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="text-white md:hidden"
+          className="text-slate-800 md:hidden"
           aria-label="Toggle Menu"
         >
           {isOpen ? <X size={30} /> : <Menu size={30} />}
@@ -255,18 +259,18 @@ export default function Navbar() {
             transition={{
               duration: 0.25,
             }}
-            className="border-t border-slate-700 bg-slate-900 md:hidden"
+            className="border-t border-slate-200 bg-white md:hidden"
           >
 
             <a
               href="/#home"
               onClick={() => setIsOpen(false)}
-              className="block px-6 py-4 text-gray-300 transition hover:bg-slate-800 hover:text-white"
+              className="block px-6 py-4 text-slate-700 transition hover:bg-slate-50 hover:text-blue-700"
             >
               Home
             </a>
 
-            <div className="border-t border-slate-800 px-6 py-3 font-semibold text-blue-400">
+            <div className="border-t border-slate-100 px-6 py-3 font-semibold text-blue-600">
               Services
             </div>
 
@@ -276,7 +280,7 @@ export default function Navbar() {
                 key={service.name}
                 href={service.href}
                 onClick={() => setIsOpen(false)}
-                className="block py-3 pl-10 pr-6 text-gray-300 transition hover:bg-slate-800 hover:text-cyan-400"
+                className="block py-3 pl-10 pr-6 text-slate-700 transition hover:bg-slate-50 hover:text-blue-700"
               >
                 {service.name}
               </Link>
@@ -286,7 +290,7 @@ export default function Navbar() {
             <a
               href="/#industries"
               onClick={() => setIsOpen(false)}
-              className="block px-6 py-4 text-gray-300 transition hover:bg-slate-800 hover:text-white"
+              className="block px-6 py-4 text-slate-700 transition hover:bg-slate-50 hover:text-blue-700"
             >
               Industries
             </a>
@@ -294,7 +298,7 @@ export default function Navbar() {
             <a
               href="/#about"
               onClick={() => setIsOpen(false)}
-              className="block px-6 py-4 text-gray-300 transition hover:bg-slate-800 hover:text-white"
+              className="block px-6 py-4 text-slate-700 transition hover:bg-slate-50 hover:text-blue-700"
             >
               About
             </a>
@@ -302,7 +306,7 @@ export default function Navbar() {
             <a
               href="/#contact"
               onClick={() => setIsOpen(false)}
-              className="block px-6 py-4 text-gray-300 transition hover:bg-slate-800 hover:text-white"
+              className="block px-6 py-4 text-slate-700 transition hover:bg-slate-50 hover:text-blue-700"
             >
               Contact
             </a>
@@ -331,3 +335,4 @@ export default function Navbar() {
     </motion.header>
   );
 }
+
