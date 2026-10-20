@@ -29,7 +29,7 @@ export default function CallToAction() {
           </Link>
 
           <a
-            href="tel:+918921520858"
+            href="tel:+919074262344"
             className="inline-flex items-center rounded-xl border border-white/30 px-8 py-4 font-semibold text-white hover:bg-white/10"
           >
             <Phone className="mr-2 h-5 w-5" />

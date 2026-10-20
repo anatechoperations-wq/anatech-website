@@ -16,7 +16,7 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
 
-        <div className="grid lg:grid-cols-5 gap-10">
+        <div className="grid gap-10 xl:grid-cols-5">
 
           {/* Company */}
 
@@ -24,7 +24,7 @@ export default function Footer() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="lg:col-span-2"
+            className="xl:col-span-2"
           >
 
             <h2 className="text-3xl font-bold text-white">
@@ -255,3 +255,4 @@ export default function Footer() {
     </footer>
   );
 }
+
