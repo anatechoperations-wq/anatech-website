@@ -13,7 +13,7 @@ import Breadcrumb from "@/components/common/Breadcrumb";
 import RelatedServices from "@/components/services/RelatedServices";
 
 export const metadata: Metadata = {
-  title: "Professional Web Development Services | ANATECH Technology Solutions",
+  title: "Professional Web Development Services",
   description:
     "ANATECH Technology Solutions provides enterprise-grade web development services including business websites, e-commerce, government portals, custom web applications, and SEO-optimized solutions.",
 
