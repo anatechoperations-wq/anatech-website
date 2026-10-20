@@ -23,7 +23,7 @@ const organizationSchema = {
 
   email: "anatech.operations@gmail.com",
 
-  telephone: "+91-8921520858",
+  telephone: "+91-9074262344",
 
   foundingLocation: {
     "@type": "Place",
