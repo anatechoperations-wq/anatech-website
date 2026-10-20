@@ -173,10 +173,10 @@ const handleSubmit = async (
                 </h3>
 
                 <a
-                  href="tel:+918921520858"
+                  href="tel:+919074262344"
                   className="text-gray-300 hover:text-blue-400 transition"
                 >
-                  +91 89215 20858
+                  +91 90742 62344
                 </a>
 
               </div>
@@ -214,7 +214,7 @@ const handleSubmit = async (
             <div className="flex flex-wrap gap-4 pt-3">
 
               <a
-                href="https://wa.me/918921520858"
+                href="https://wa.me/919074262344"
                 target="_blank"
                 className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-xl font-semibold flex items-center gap-2 transition"
               >
@@ -223,7 +223,7 @@ const handleSubmit = async (
               </a>
 
               <a
-                href="tel:+918921520858"
+                href="tel:+919074262344"
                 className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl font-semibold flex items-center gap-2 transition"
               >
                 <Phone size={20} />
@@ -382,3 +382,4 @@ const handleSubmit = async (
     </section>
   );
 }
+
