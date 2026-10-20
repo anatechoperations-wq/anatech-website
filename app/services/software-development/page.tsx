@@ -3,7 +3,7 @@ import ServiceLayout from "@/components/layouts/ServiceLayout";
 import SoftwareHero from "@/components/services/SoftwareHero";
 
 export const metadata: Metadata = {
-  title: "Software Development Services | ANATECH Technology Solutions",
+  title: "Software Development Services",
   description:
     "Custom software development services including enterprise applications, ERP, CRM, cloud software and business automation solutions.",
 
