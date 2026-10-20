@@ -23,7 +23,7 @@ const organizationSchema = {
 
   email: "anatech.operations@gmail.com",
 
-  telephone: "+91-8921520858",
+  telephone: "+91-9074262344",
 
   foundingLocation: {
     "@type": "Place",
@@ -87,6 +87,10 @@ export const metadata: Metadata = {
 
   alternates: {
     canonical: "https://www.anatechsolutions.in",
+    languages: {
+      en: "https://www.anatechsolutions.in",
+      ml: "https://www.anatechsolutions.in/ml",
+    },
   },
 
   openGraph: {
@@ -137,7 +141,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-   <body>
+   <body className="overflow-x-hidden">
 
   <GoogleAnalytics />
 

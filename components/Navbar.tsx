@@ -15,22 +15,14 @@ import {
 } from "lucide-react";
 
 const serviceLinks = [
-  {
-    name: "Web Development",
-    href: "/services/web-development",
-  },
-  {
-    name: "AI Solutions",
-    href: "/services/ai-solutions",
-  },
-  {
-    name: "Software Development",
-    href: "/services/software-development",
-  },
-  {
-    name: "Business Consultancy",
-    href: "/services/business-consultancy",
-  },
+  { name: "Web Development", href: "/services/web-development" },
+  { name: "AI Solutions", href: "/services/ai-solutions" },
+  { name: "Software Development", href: "/services/software-development" },
+  { name: "Digital Media", href: "/services/digital-media" },
+  { name: "Import & Export", href: "/services/import-export" },
+  { name: "Business Consultancy", href: "/services/business-consultancy" },
+  { name: "Government e-Services", href: "/services/government-e-services" },
+  { name: "Training & Academy", href: "/services/training-academy" },
 ];
 
 const navLinkClass =
@@ -116,7 +108,7 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-8 xl:flex">
 
           <a
             href="/#home"
@@ -216,6 +208,10 @@ export default function Navbar() {
             Contact
           </a>
 
+          <Link href="/ml" lang="ml" className={navLinkClass}>
+            മലയാളം
+          </Link>
+
         </nav>
 
         {/* Desktop CTA */}
@@ -228,7 +224,7 @@ export default function Navbar() {
             scale: 0.96,
           }}
           href="/#contact"
-          className="hidden rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white shadow-md shadow-blue-600/20 transition hover:bg-blue-700 md:block"
+          className="hidden rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white shadow-md shadow-blue-600/20 transition hover:bg-blue-700 xl:block"
         >
           Get Started
         </motion.a>
@@ -237,7 +233,7 @@ export default function Navbar() {
 
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="text-slate-800 md:hidden"
+          className="text-slate-800 xl:hidden"
           aria-label="Toggle Menu"
         >
           {isOpen ? <X size={30} /> : <Menu size={30} />}
@@ -267,7 +263,7 @@ export default function Navbar() {
             transition={{
               duration: 0.25,
             }}
-            className="border-t border-slate-200 bg-white md:hidden"
+            className="border-t border-slate-200 bg-white xl:hidden"
           >
 
             <a
@@ -319,6 +315,15 @@ export default function Navbar() {
               Contact
             </a>
 
+            <Link
+              href="/ml"
+              lang="ml"
+              onClick={() => setIsOpen(false)}
+              className="block px-6 py-4 font-semibold text-blue-700 transition hover:bg-blue-50"
+            >
+              മലയാളം
+            </Link>
+
             <div className="p-4">
 
               <motion.a
@@ -343,3 +348,4 @@ export default function Navbar() {
     </motion.header>
   );
 }
+
