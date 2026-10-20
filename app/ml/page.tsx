@@ -38,13 +38,13 @@ export default function MalayalamPage() {
       <p className="text-sm font-bold tracking-wide text-blue-700">ഞങ്ങൾ ചെയ്തുതരുന്നത്</p>
       <h2 className="mt-3 text-3xl font-black">ബിസിനസ്സിന് ഉപയോഗപ്രദമായ ഡിജിറ്റൽ സേവനങ്ങൾ</h2>
       <div className="mt-8 grid gap-5 md:grid-cols-3">{services.map(([title, description]) => <article key={title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h3 className="text-xl font-bold">{title}</h3><p className="mt-3 leading-7 text-slate-600">{description}</p></article>)}</div>
-      <Link href="/services" lang="en" className="mt-8 inline-flex rounded-lg font-bold text-blue-700 underline underline-offset-4">All services കാണുക →</Link>
+      <Link href="/ml/services" className="mt-8 inline-flex rounded-lg font-bold text-blue-700 underline underline-offset-4">എല്ലാ സേവനങ്ങളും കാണുക →</Link>
     </section>
     <section className="bg-white px-6 py-20">
       <div className="mx-auto max-w-6xl rounded-3xl bg-blue-700 p-8 text-white md:p-12">
         <p className="text-sm font-bold text-cyan-200">എങ്ങനെ തുടങ്ങാം?</p>
         <div className="mt-6 grid gap-6 md:grid-cols-3"><div><b>1. വിവരങ്ങൾ അയക്കൂ</b><p className="mt-2 text-blue-100">നിങ്ങളുടെ ബിസിനസ്സും ആവശ്യവും WhatsApp-ൽ പറയുക.</p></div><div><b>2. ഡെമോ കാണൂ</b><p className="mt-2 text-blue-100">നിങ്ങൾക്ക് അനുയോജ്യമായ പരിഹാരവും പ്രവൃത്തി രീതിയും മനസ്സിലാക്കുക.</p></div><div><b>3. തീരുമാനിക്കൂ</b><p className="mt-2 text-blue-100">വ്യക്തമായ scope, സമയം, വില എന്നിവ അംഗീകരിച്ച ശേഷം മാത്രം മുന്നോട്ട് പോകാം.</p></div></div>
-        <a href="mailto:anatech.operations@gmail.com" className="mt-8 inline-flex rounded-xl bg-white px-6 py-3 font-bold text-blue-800">Email അയക്കൂ</a>
+        <a href="/ml/contact" className="mt-8 inline-flex rounded-xl bg-white px-6 py-3 font-bold text-blue-800">Enquiry അയക്കൂ</Link>
       </div>
     </section>
     <footer className="px-6 py-10 text-center text-sm text-slate-500">© {new Date().getFullYear()} ANATECH Technology Solutions · കൊല്ലം, കേരളം</footer>
