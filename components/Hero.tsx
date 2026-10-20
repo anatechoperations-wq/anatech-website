@@ -1,309 +1,362 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useReducedMotion,
+} from "framer-motion";
 import {
   ArrowRight,
   CheckCircle2,
-  BrainCircuit,
-  ShieldCheck,
-  Sparkles,
-  Building2,
+  ShoppingCart,
+  Globe,
+  LayoutDashboard,
+  Receipt,
 } from "lucide-react";
+
+const words = [
+  "Business Software",
+  "Shopping Cart",
+  "Business Website",
+];
+
+const chips = [
+  { icon: LayoutDashboard, label: "Business Software" },
+  { icon: ShoppingCart, label: "Shopping Cart" },
+  { icon: Globe, label: "Business Website" },
+];
+
+const points = [
+  "See a demo first",
+  "Tailored to your business",
+  "Based in Kollam, Kerala",
+];
+
+const bars = [38, 62, 48, 78, 58, 92, 72];
+
+const stock = [
+  { name: "Rice", pct: 82, color: "bg-blue-500" },
+  { name: "Sugar", pct: 46, color: "bg-cyan-500" },
+  { name: "Coconut oil", pct: 14, color: "bg-red-500" },
+];
+
+function RotatingWord() {
+  const reduce = useReducedMotion();
+  const [i, setI] = useState(0);
+
+  useEffect(() => {
+    if (reduce) return;
+    const t = setInterval(() => {
+      setI((v) => (v + 1) % words.length);
+    }, 2800);
+    return () => clearInterval(t);
+  }, [reduce]);
+
+  return (
+    <span className="relative mt-2 block h-[1.4em] overflow-hidden whitespace-nowrap text-3xl md:text-4xl lg:text-5xl">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={i}
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: "-100%", opacity: 0 }}
+          transition={{ duration: 0.45 }}
+          className="absolute left-0 top-0 block bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text pb-1 text-transparent"
+        >
+          {words[i]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
+
+function BackgroundGraphics() {
+  const reduce = useReducedMotion();
+
+  const loop = (duration: number) => ({
+    duration,
+    repeat: Infinity,
+    repeatType: "mirror" as const,
+    ease: "easeInOut" as const,
+  });
+
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+    >
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(rgba(37,99,235,0.15) 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+        }}
+      />
+
+      <motion.div
+        animate={reduce ? {} : { x: [0, 60, 0], y: [0, 40, 0] }}
+        transition={loop(14)}
+        className="absolute -top-32 -right-24 h-[460px] w-[460px] rounded-full bg-blue-400/20 blur-[110px]"
+      />
+
+      <motion.div
+        animate={reduce ? {} : { x: [0, -50, 0], y: [0, -30, 0] }}
+        transition={loop(16)}
+        className="absolute -bottom-40 -left-24 h-[420px] w-[420px] rounded-full bg-cyan-300/25 blur-[110px]"
+      />
+
+      <svg
+        viewBox="0 0 1200 600"
+        preserveAspectRatio="xMidYMax slice"
+        className="absolute bottom-0 left-0 h-full w-full"
+        fill="none"
+      >
+        <motion.path
+          d="M0 540 C 150 500, 260 520, 390 450 S 610 400, 730 320 S 960 230, 1200 100"
+          stroke="rgba(37,99,235,0.3)"
+          strokeWidth="3"
+          strokeLinecap="round"
+          initial={{ pathLength: reduce ? 1 : 0 }}
+          animate={{ pathLength: 1 }}
+          transition={
+            reduce
+              ? { duration: 0 }
+              : {
+                  duration: 3.5,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                  repeatDelay: 2,
+                }
+          }
+        />
+      </svg>
+    </div>
+  );
+}
+
+function FloatCard({
+  className,
+  delay,
+  children,
+}: {
+  className: string;
+  delay: number;
+  children: React.ReactNode;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={
+        reduce
+          ? { opacity: 1, scale: 1 }
+          : { opacity: 1, scale: 1, y: [0, -10, 0] }
+      }
+      transition={{
+        opacity: { delay, duration: 0.5 },
+        scale: { delay, duration: 0.5 },
+        y: { duration: 5, repeat: Infinity, ease: "easeInOut", delay },
+      }}
+      className={`absolute z-20 hidden items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-xl shadow-blue-900/10 sm:flex ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function DashboardPreview() {
+  return (
+    <div className="relative mx-auto w-full max-w-xl">
+      <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-blue-200/50 to-cyan-100/50 blur-2xl" />
+
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-blue-900/15">
+        {/* Window bar */}
+        <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50 px-4 py-3">
+          <span className="h-3 w-3 rounded-full bg-red-300" />
+          <span className="h-3 w-3 rounded-full bg-amber-300" />
+          <span className="h-3 w-3 rounded-full bg-green-300" />
+          <span className="ml-3 text-xs font-medium text-slate-400">
+            Sample preview
+          </span>
+        </div>
+
+        <div className="p-5 sm:pb-14">
+          <div className="flex items-end justify-between">
+            <div>
+              <p className="text-xs text-slate-500">Today&apos;s sales</p>
+              <p className="text-3xl font-extrabold text-slate-900">
+                ₹ 18,450
+              </p>
+            </div>
+            <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+              24 bills
+            </span>
+          </div>
+
+          {/* Sales bars */}
+          <div className="mt-5 flex h-32 items-end gap-2 rounded-xl bg-slate-50 p-3">
+            {bars.map((h, i) => (
+              <motion.div
+                key={i}
+                initial={{ height: 0 }}
+                animate={{ height: `${h}%` }}
+                transition={{ delay: 0.6 + i * 0.1, duration: 0.7 }}
+                className="flex-1 rounded-t-md bg-gradient-to-t from-blue-600 to-cyan-400"
+              />
+            ))}
+          </div>
+
+          {/* Stock */}
+          <p className="mt-5 text-xs font-semibold text-slate-500">
+            Stock level
+          </p>
+          <div className="mt-2 space-y-3">
+            {stock.map((s, i) => (
+              <div key={s.name}>
+                <div className="flex justify-between text-xs text-slate-600">
+                  <span>{s.name}</span>
+                  <span>{s.pct < 20 ? "Low stock" : `${s.pct}%`}</span>
+                </div>
+                <div className="mt-1 h-2 overflow-hidden rounded-full bg-slate-100">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${s.pct}%` }}
+                    transition={{ delay: 1.2 + i * 0.15, duration: 0.8 }}
+                    className={`h-full rounded-full ${s.color}`}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <FloatCard className="-top-6 right-4" delay={1.4}>
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-green-600">
+          <Receipt className="h-5 w-5" />
+        </span>
+        <div>
+          <p className="text-sm font-bold text-slate-900">Bill saved</p>
+          <p className="text-xs text-slate-500">Stock updated</p>
+        </div>
+      </FloatCard>
+
+      <FloatCard className="-bottom-5 left-4" delay={1.8}>
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+          <ShoppingCart className="h-5 w-5" />
+        </span>
+        <div>
+          <p className="text-sm font-bold text-slate-900">Cart: 3 items</p>
+          <p className="text-xs text-slate-500">Online order</p>
+        </div>
+      </FloatCard>
+
+      <FloatCard className="-bottom-5 right-4" delay={2.2}>
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-100 text-cyan-700">
+          <Globe className="h-5 w-5" />
+        </span>
+        <div>
+          <p className="text-sm font-bold text-slate-900">Website live</p>
+          <p className="text-xs text-slate-500">Mobile friendly</p>
+        </div>
+      </FloatCard>
+    </div>
+  );
+}
 
 export default function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 pt-32 pb-28"
+      className="relative overflow-hidden border-b border-slate-200 bg-white pt-32 pb-28"
     >
-      {/* Background Effects */}
+      <BackgroundGraphics />
 
-      <div className="absolute -top-52 -right-52 h-[500px] w-[500px] rounded-full bg-cyan-500/20 blur-[150px]" />
-
-      <div className="absolute bottom-0 -left-32 h-[420px] w-[420px] rounded-full bg-blue-600/20 blur-[140px]" />
-
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.05),transparent_45%)]" />
-
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
-
-          {/* ================= LEFT CONTENT ================= */}
-
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="grid items-center gap-16 lg:grid-cols-2">
+          {/* LEFT */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
           >
+            <p className="text-sm font-semibold text-blue-600">
+              Kollam, Kerala
+            </p>
 
-            {/* Enterprise Badge */}
+            <h1 className="mt-4 text-4xl font-extrabold leading-tight text-slate-900 md:text-5xl lg:text-6xl">
+              Grow your business with
+              <RotatingWord />
+            </h1>
 
-            <motion.div
-              initial={{ opacity: 0, y: -15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-5 py-2 backdrop-blur-xl"
-            >
-              <Sparkles className="h-4 w-4 text-cyan-400" />
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+              ANATECH Technology Solutions builds business software, online
+              shopping carts and professional websites, tailored to the way
+              your business works. Start with a demo and continue only if you
+              like it.
+            </p>
 
-              <span className="text-xs md:text-sm font-semibold uppercase tracking-[3px] text-cyan-300">
-                Enterprise Technology Solutions
-              </span>
+            <div className="mt-6 flex flex-wrap gap-3">
+              {chips.map((c) => (
+                <span
+                  key={c.label}
+                  className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800"
+                >
+                  <c.icon className="h-4 w-4" />
+                  {c.label}
+                </span>
+              ))}
+            </div>
 
-            </motion.div>
-
-            {/* Main Heading */}
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="mt-8 text-5xl md:text-6xl lg:text-7xl font-black leading-tight text-white"
-            >
-              Empowering Businesses
-
-              <br />
-
-              Through
-
-              <span className="block bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-600 bg-clip-text text-transparent">
-
-                Technology & AI
-
-              </span>
-
-            </motion.h1>
-
-            {/* Description */}
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.45 }}
-              className="mt-8 max-w-2xl text-lg leading-8 text-slate-300"
-            >
-              ANATECH Technology Solutions delivers enterprise-grade
-              Web Development, Artificial Intelligence, Software
-              Development, Digital Media, Business Consultancy,
-              Government e-Services and Technology Solutions
-              that empower organisations to innovate, transform,
-              and grow with confidence.
-            </motion.p>
-
-            {/* CTA Buttons */}
-
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="mt-10 flex flex-col sm:flex-row gap-5"
-            >
-
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <a
                 href="#contact"
-                className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 px-8 py-4 font-semibold text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-cyan-500/40"
+                className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-8 py-4 font-semibold text-white shadow-lg shadow-blue-600/25 transition hover:bg-blue-700"
               >
                 Get Free Consultation
-
                 <ArrowRight className="ml-2 h-5 w-5" />
               </a>
 
               <a
                 href="#services"
-                className="inline-flex items-center justify-center rounded-xl border border-slate-600 px-8 py-4 font-semibold text-white transition-all duration-300 hover:border-cyan-400 hover:bg-slate-800"
+                className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white/70 px-8 py-4 font-semibold text-slate-800 transition hover:bg-slate-50"
               >
                 Explore Our Services
               </a>
+            </div>
 
-            </motion.div>
+            <ul className="mt-10 grid gap-3 sm:grid-cols-3">
+              {points.map((p) => (
+                <li
+                  key={p}
+                  className="flex items-center gap-2 text-sm text-slate-600"
+                >
+                  <CheckCircle2 className="h-5 w-5 shrink-0 text-blue-600" />
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
 
-            {/* Trust Indicators */}
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="mt-12 grid grid-cols-2 gap-5"
-            >
-
-              <div className="flex items-center gap-3 text-slate-300">
-
-                <CheckCircle2 className="h-5 w-5 text-cyan-400" />
-
-                <span>AI Powered</span>
-
-              </div>
-
-              <div className="flex items-center gap-3 text-slate-300">
-
-                <ShieldCheck className="h-5 w-5 text-cyan-400" />
-
-                <span>Secure Solutions</span>
-
-              </div>
-
-              <div className="flex items-center gap-3 text-slate-300">
-
-                <BrainCircuit className="h-5 w-5 text-cyan-400" />
-
-                <span>Enterprise Ready</span>
-
-              </div>
-
-              <div className="flex items-center gap-3 text-slate-300">
-
-                <Building2 className="h-5 w-5 text-cyan-400" />
-
-                <span>Digital Transformation</span>
-
-              </div>
-
-            </motion.div>
-
+            <p className="mt-8 text-sm text-slate-500">
+              Also: AI solutions, digital media, government e-services and
+              more.
+            </p>
           </motion.div>
 
-          {/* ================= RIGHT CONTENT STARTS IN PART 2 ================= */}
-          {/* ================= RIGHT CONTENT STARTS IN PART 2 ================= */}
-                    <motion.div
-            initial={{ opacity: 0, x: 40, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="relative flex items-center justify-center min-h-[620px]"
+          {/* RIGHT */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="pb-8"
           >
-            {/* Glow Background */}
-
-            <div className="absolute h-[520px] w-[520px] rounded-full bg-cyan-500/10 blur-3xl" />
-
-            {/* Outer Rotating Ring */}
-
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{
-                duration: 35,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              className="absolute h-[400px] w-[400px] rounded-full border-2 border-dashed border-cyan-400/30"
-            />
-
-            {/* Inner Rotating Ring */}
-
-            <motion.div
-              animate={{ rotate: -360 }}
-              transition={{
-                duration: 45,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              className="absolute h-[320px] w-[320px] rounded-full border border-blue-500/30"
-            />
-
-            {/* Logo */}
-
-            <motion.div
-              animate={{
-                y: [-6, 6, -6],
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 5,
-              }}
-              className="relative z-20 flex h-64 w-64 items-center justify-center rounded-full border border-cyan-400/30 bg-slate-900 shadow-[0_0_80px_rgba(0,180,255,0.35)]"
-            >
-              <img
-                src="/logo.png"
-                alt="ANATECH Logo"
-                className="h-44 w-44 object-contain"
-              />
-            </motion.div>
-
-            {/* Floating Card 1 */}
-
-            <motion.div
-              animate={{ y: [-8, 8, -8] }}
-              transition={{
-                repeat: Infinity,
-                duration: 4,
-              }}
-              className="absolute top-16 left-0 rounded-2xl border border-slate-700 bg-slate-900/90 px-5 py-4 backdrop-blur-xl shadow-xl"
-            >
-              <p className="font-semibold text-cyan-400">
-                🤖 AI Solutions
-              </p>
-            </motion.div>
-
-            {/* Floating Card 2 */}
-
-            <motion.div
-              animate={{ y: [8, -8, 8] }}
-              transition={{
-                repeat: Infinity,
-                duration: 5,
-              }}
-              className="absolute top-24 right-0 rounded-2xl border border-slate-700 bg-slate-900/90 px-5 py-4 backdrop-blur-xl shadow-xl"
-            >
-              <p className="font-semibold text-cyan-400">
-                💻 IT Services
-              </p>
-            </motion.div>
-
-            {/* Floating Card 3 */}
-
-            <motion.div
-              animate={{ y: [-10, 10, -10] }}
-              transition={{
-                repeat: Infinity,
-                duration: 4.5,
-              }}
-              className="absolute bottom-40 left-6 rounded-2xl border border-slate-700 bg-slate-900/90 px-5 py-4 backdrop-blur-xl shadow-xl"
-            >
-              <p className="font-semibold text-cyan-400">
-                🌐 Digital Transformation
-              </p>
-            </motion.div>
-
-            {/* Floating Card 4 */}
-            {/* Positioned higher to avoid Chatbase overlap */}
-
-            <motion.div
-              animate={{ y: [10, -10, 10] }}
-              transition={{
-                repeat: Infinity,
-                duration: 5.5,
-              }}
-              className="absolute bottom-40 right-8 rounded-2xl border border-slate-700 bg-slate-900/90 px-5 py-4 backdrop-blur-xl shadow-xl"
-            >
-              <p className="font-semibold text-cyan-400">
-                ☁ Cloud Technologies
-              </p>
-            </motion.div>
-
-            {/* Floating Badge */}
-
-            <motion.div
-              animate={{
-                scale: [1, 1.05, 1],
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 3,
-              }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 rounded-full border border-cyan-500/30 bg-slate-900/90 px-6 py-3 backdrop-blur-xl shadow-xl"
-            >
-              <span className="font-semibold text-cyan-300">
-                Trusted Technology Partner
-              </span>
-            </motion.div>
-
+            <DashboardPreview />
           </motion.div>
-                  </div>
-
+        </div>
       </div>
-
-      {/* Bottom Fade */}
-
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-950 to-transparent" />
-
     </section>
   );
 }
+
