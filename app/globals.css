@@ -46,3 +46,15 @@ html{
 body{
   overflow-x:hidden;
 }
+
+html,
+body {
+  overflow-x: clip;
+}
+
+body[data-mobile-nav-open="true"] #chatbase-message-bubbles,
+body[data-mobile-nav-open="true"] #chatbase-bubble-button,
+body[data-mobile-nav-open="true"] #chatbase-bubble-window,
+body[data-mobile-nav-open="true"] [aria-label="Chat on WhatsApp"] {
+  display: none !important;
+}
