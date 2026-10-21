@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import {
-  ArrowUp,
   Mail,
   Phone,
   MapPin,
@@ -237,22 +236,8 @@ export default function Footer() {
 
       </div>
 
-      {/* Back To Top */}
-
-      <button
-        onClick={() =>
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-          })
-        }
-        className="fixed bottom-6 right-6 w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 shadow-xl flex items-center justify-center text-white transition"
-        aria-label="Back to top"
-      >
-        <ArrowUp size={22} />
-      </button>
-
-    </footer>
+      {
+</footer>
   );
 }
 

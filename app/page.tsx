@@ -8,7 +8,6 @@ import SolutionsGrid from "@/components/SolutionsGrid";
 import Industries from "@/components/Industries";
 import WhyChoose from "@/components/WhyChoose";
 import Contact from "@/components/Contact";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -27,8 +26,6 @@ export default function Home() {
         <WhyChoose />
         <Contact />
       </main>
-
-      <FloatingWhatsApp />
 
       <Footer />
     </>
