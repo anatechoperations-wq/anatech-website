@@ -44,6 +44,13 @@ export default function Navbar() {
     });
   }, [scrollY]);
 
+  useEffect(() => {
+    document.body.dataset.mobileNavOpen = isOpen ? "true" : "false";
+    return () => {
+      delete document.body.dataset.mobileNavOpen;
+    };
+  }, [isOpen]);
+
   return (
     <motion.header
       animate={{
@@ -51,7 +58,7 @@ export default function Navbar() {
 
         backgroundColor: small
           ? "rgba(255,255,255,.97)"
-          : "rgba(255,255,255,.85)",
+          : "rgba(255,255,255,.96)",
 
         boxShadow: small
           ? "0 4px 20px rgba(15,23,42,0.08)"
@@ -60,9 +67,9 @@ export default function Navbar() {
       transition={{
         duration: 0.3,
       }}
-      className="fixed inset-x-0 top-0 z-50 border-b border-slate-200 backdrop-blur-xl"
+      className="fixed inset-x-0 top-0 z-[10000] border-b border-slate-200 backdrop-blur-xl"
     >
-      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6 lg:px-8">
+      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
         {/* Logo */}
 
@@ -76,25 +83,25 @@ export default function Navbar() {
         >
           <Link
             href="/"
-            className="flex items-center gap-3"
+            className="flex min-w-0 items-center gap-2 sm:gap-3"
           >
             <Image
               src="/logo.png"
               alt="ANATECH Technology Solutions"
-              width={52}
-              height={52}
+              width={48}
+              height={48}
               priority
             />
 
             <div>
 
-              <p className="text-xl font-bold text-slate-900">
+              <p className="text-lg font-bold text-slate-900 sm:text-xl">
 
                 ANATECH
 
               </p>
 
-              <p className="text-[10px] tracking-[4px] text-blue-600">
+              <p className="text-[8px] tracking-[3px] text-blue-600 sm:text-[10px] sm:tracking-[4px]">
 
                 TECHNOLOGY SOLUTIONS
 
@@ -233,8 +240,9 @@ export default function Navbar() {
 
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="text-slate-800 xl:hidden"
+          className="ml-3 shrink-0 rounded-lg p-2 text-slate-800 transition hover:bg-slate-100 xl:hidden"
           aria-label="Toggle Menu"
+          aria-expanded={isOpen}
         >
           {isOpen ? <X size={30} /> : <Menu size={30} />}
         </button>
@@ -263,7 +271,7 @@ export default function Navbar() {
             transition={{
               duration: 0.25,
             }}
-            className="border-t border-slate-200 bg-white xl:hidden"
+            className="absolute inset-x-0 top-full max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-slate-200 bg-white shadow-2xl xl:hidden"
           >
 
             <a
@@ -273,6 +281,16 @@ export default function Navbar() {
             >
               Home
             </a>
+
+            <Link
+              href="/ml"
+              lang="ml"
+              onClick={() => setIsOpen(false)}
+              className="mx-4 my-3 flex items-center justify-between rounded-xl bg-blue-50 px-4 py-3 font-bold text-blue-800 transition hover:bg-blue-100"
+            >
+              <span>മലയാളത്തിൽ കാണുക</span>
+              <span aria-hidden="true">മലയാളം →</span>
+            </Link>
 
             <div className="border-t border-slate-100 px-6 py-3 font-semibold text-blue-600">
               Services
