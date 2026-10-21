@@ -55,6 +55,7 @@ body {
 body[data-mobile-nav-open="true"] #chatbase-message-bubbles,
 body[data-mobile-nav-open="true"] #chatbase-bubble-button,
 body[data-mobile-nav-open="true"] #chatbase-bubble-window,
-body[data-mobile-nav-open="true"] [aria-label="Chat on WhatsApp"] {
+body[data-mobile-nav-open="true"] [aria-label="Chat on WhatsApp"],
+body[data-mobile-nav-open="true"] [aria-label="Back to top"] {
   display: none !important;
 }

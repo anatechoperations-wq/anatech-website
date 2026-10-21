@@ -19,6 +19,8 @@ export default function Contact() {
   phone: "",
   service: "",
   message: "",
+  intent: "",
+  contactPreference: "",
 });
 
 const [loading, setLoading] = useState(false);
@@ -40,7 +42,7 @@ const handleSubmit = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(form),
+      body: JSON.stringify({...form,message:[form.message,form.intent && "Lead intent: " + form.intent,form.contactPreference && "Preferred contact: " + form.contactPreference].filter(Boolean).join("\n\n")}),
     });
 
     const result = await response.json();
@@ -54,6 +56,8 @@ const handleSubmit = async (
       phone: "",
       service: "",
       message: "",
+      intent: "",
+      contactPreference: "",
     });
     } else {
       setStatus("error");
@@ -344,9 +348,9 @@ const handleSubmit = async (
               <option>Government e-Services</option>
             </select>
 
-            <textarea
+            <select required value={form.intent} onChange={(e) => setForm({ ...form, intent: e.target.value })} className="w-full mb-5 p-4 rounded-xl bg-slate-800 border border-slate-700 focus:border-blue-500 outline-none"><option value="">What would you like to do?</option><option>Get a consultation / next step</option><option>Request a quotation or proposal</option><option>Understand the service in detail</option><option>I have an urgent requirement</option></select><select required value={form.contactPreference} onChange={(e) => setForm({ ...form, contactPreference: e.target.value })} className="w-full mb-5 p-4 rounded-xl bg-slate-800 border border-slate-700 focus:border-blue-500 outline-none"><option value="">Preferred contact method</option><option>WhatsApp</option><option>Phone call</option><option>Email</option></select><textarea
               rows={6}
-              placeholder="Your Message"
+              placeholder="Tell us your business, requirement and desired outcome"
               value={form.message}
               onChange={(e) =>
                 setForm({ ...form, message: e.target.value })
@@ -354,6 +358,7 @@ const handleSubmit = async (
               className="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 focus:border-blue-500 outline-none"
             />
 
+            <p className="mt-5 text-sm leading-6 text-slate-300">Your details are used to understand the enquiry and suggest the right next step.</p>
             <button
               type="submit"
               disabled={loading}

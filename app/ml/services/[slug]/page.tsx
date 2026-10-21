@@ -74,7 +74,7 @@ export default async function MalayalamServicePage({ params }: Props) {
           <h1 className="mt-4 max-w-3xl text-4xl font-black leading-tight md:text-5xl lg:text-6xl">{service.title}</h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">{service.description}</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/ml/contact" className="inline-flex rounded-xl bg-emerald-500 px-6 py-3 font-bold text-emerald-950">Enquiry അയക്കൂ</Link>
+            <Link href={"/ml/contact?service=" + encodeURIComponent(service.title)} className="inline-flex rounded-xl bg-emerald-500 px-6 py-3 font-bold text-emerald-950">Enquiry അയക്കൂ</Link>
             <a href={whatsappHref} target="_blank" rel="noreferrer" className="inline-flex rounded-xl border border-slate-500 px-6 py-3 font-bold text-white">WhatsApp-ൽ സംസാരിക്കൂ</a>
           </div>
         </div>
@@ -117,7 +117,7 @@ export default async function MalayalamServicePage({ params }: Props) {
       <section className="bg-blue-700 px-5 py-16 text-white sm:px-6">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div><p className="text-cyan-200">അടുത്ത ഘട്ടം</p><h2 className="mt-2 text-3xl font-black">നിങ്ങളുടെ ആവശ്യം ഒരു സന്ദേശമായി അയക്കൂ.</h2><p className="mt-3 max-w-2xl text-blue-100">നിങ്ങളുടെ ലക്ഷ്യം, നിലവിലെ സ്ഥിതി, ആവശ്യമുള്ള സഹായം എന്നിവ പറഞ്ഞാൽ അനുയോജ്യമായ next step സംസാരിക്കാം.</p></div>
-          <Link href="/ml/contact" className="shrink-0 rounded-xl bg-white px-6 py-3 font-bold text-blue-800">Malayalam enquiry</Link>
+          <Link href={"/ml/contact?service=" + encodeURIComponent(service.title)} className="shrink-0 rounded-xl bg-white px-6 py-3 font-bold text-blue-800">Malayalam enquiry</Link>
         </div>
       </section>
     </main>

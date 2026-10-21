@@ -1,31 +1,13 @@
 "use client";
 import { useState } from "react";
 import { malayalamServices } from "@/lib/malayalam-services";
-
-export function MalayalamLeadForm() {
-  const [form, setForm] = useState({ name:"", email:"", phone:"", service:"", message:"" });
-  const [status, setStatus] = useState<"idle"|"sending"|"success"|"error">("idle");
-  async function submit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault(); setStatus("sending");
-    try {
-      const response = await fetch("/api/contact", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ ...form, service:"Malayalam: " + form.service }) });
-      if (!response.ok) throw new Error("Request failed");
-      const result = await response.json() as { success?: boolean };
-      if (!result.success) throw new Error("Request failed");
-      setForm({ name:"", email:"", phone:"", service:"", message:"" }); setStatus("success");
-    } catch { setStatus("error"); }
-  }
-  const field="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100";
-  return <form onSubmit={submit} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-    <div className="grid gap-5 md:grid-cols-2">
-      <label className="font-bold">പേര് *<input required value={form.name} onChange={e=>setForm(old=>({...old,name:e.target.value}))} className={field} autoComplete="name"/></label>
-      <label className="font-bold">ഫോൺ നമ്പർ *<input required type="tel" value={form.phone} onChange={e=>setForm(old=>({...old,phone:e.target.value}))} className={field} autoComplete="tel"/></label>
-      <label className="font-bold">ഇമെയിൽ *<input required type="email" value={form.email} onChange={e=>setForm(old=>({...old,email:e.target.value}))} className={field} autoComplete="email"/></label>
-      <label className="font-bold">ആവശ്യമായ സേവനം *<select required value={form.service} onChange={e=>setForm(old=>({...old,service:e.target.value}))} className={field}><option value="">തിരഞ്ഞെടുക്കുക</option>{malayalamServices.map(service=><option key={service.slug}>{service.title}</option>)}<option>മറ്റൊരു സേവനം</option></select></label>
-    </div>
-    <label className="mt-5 block font-bold">നിങ്ങളുടെ ആവശ്യം *<textarea required value={form.message} onChange={e=>setForm(old=>({...old,message:e.target.value}))} className={field+" min-h-32"} placeholder="ബിസിനസ്സ്, ആവശ്യമുള്ള സേവനം, ലക്ഷ്യം എന്നിവ ചുരുക്കി എഴുതുക."/></label>
-    <button disabled={status==="sending"} className="mt-6 rounded-xl bg-blue-700 px-6 py-3 font-bold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-70">{status==="sending" ? "അയക്കുന്നു…" : "അന്വേഷണം അയക്കൂ"}</button>
-    {status==="success"&&<p role="status" className="mt-4 font-semibold text-emerald-700">നന്ദി. നിങ്ങളുടെ അന്വേഷണം ലഭിച്ചു. ഞങ്ങൾ ഉടൻ ബന്ധപ്പെടും.</p>}
-    {status==="error"&&<p role="alert" className="mt-4 font-semibold text-rose-700">അയക്കാൻ കഴിഞ്ഞില്ല. ദയവായി വീണ്ടും ശ്രമിക്കുക അല്ലെങ്കിൽ WhatsApp-ൽ ബന്ധപ്പെടുക.</p>}
-  </form>;
+type Props={initialService?:string};
+const intents=["ഒരു consultation / next step അറിയണം","quotation അല്ലെങ്കിൽ proposal വേണം","service വിശദമായി അറിയണം","urgent requirement ഉണ്ട്"];
+const preferences=["WhatsApp","Phone call","Email"];
+export function MalayalamLeadForm({initialService=""}:Props){
+ const [form,setForm]=useState({name:"",email:"",phone:"",service:initialService,message:"",intent:"",contactPreference:""});
+ const [status,setStatus]=useState<"idle"|"sending"|"success"|"error">("idle");
+ async function submit(e:React.FormEvent<HTMLFormElement>){e.preventDefault();setStatus("sending");const q=[form.intent&&"Lead intent: "+form.intent,form.contactPreference&&"Preferred contact: "+form.contactPreference].filter(Boolean).join("\n");try{const r=await fetch("/api/contact",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...form,service:"Malayalam: "+form.service,message:[form.message,q].filter(Boolean).join("\n\n")})});const data=await r.json() as {success?:boolean};if(!r.ok||!data.success)throw new Error();setForm({name:"",email:"",phone:"",service:"",message:"",intent:"",contactPreference:""});setStatus("success")}catch{setStatus("error")}}
+ const field="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100";
+ return <form onSubmit={submit} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:p-8"><p className="rounded-xl bg-blue-50 px-4 py-3 text-sm leading-6 text-blue-950">ഈ വിവരങ്ങൾ enquiry മനസ്സിലാക്കി ശരിയായ അടുത്ത ഘട്ടം നിർദേശിക്കാൻ മാത്രം ഉപയോഗിക്കും. സമർപ്പിച്ചാൽ ANATECH enquiry system-ലേക്ക് രേഖപ്പെടും.</p><div className="mt-5 grid gap-5 md:grid-cols-2"><label className="font-bold">പേര് *<input required value={form.name} onChange={e=>setForm(x=>({...x,name:e.target.value}))} className={field}/></label><label className="font-bold">ഫോൺ നമ്പർ *<input required type="tel" value={form.phone} onChange={e=>setForm(x=>({...x,phone:e.target.value}))} className={field}/></label><label className="font-bold">ഇമെയിൽ *<input required type="email" value={form.email} onChange={e=>setForm(x=>({...x,email:e.target.value}))} className={field}/></label><label className="font-bold">ആവശ്യമായ സേവനം *<select required value={form.service} onChange={e=>setForm(x=>({...x,service:e.target.value}))} className={field}><option value="">തിരഞ്ഞെടുക്കുക</option>{malayalamServices.map(s=><option key={s.slug} value={s.title}>{s.title}</option>)}<option value="മറ്റൊരു സേവനം">മറ്റൊരു സേവനം</option></select></label><label className="font-bold">എന്താണ് വേണ്ടത്? *<select required value={form.intent} onChange={e=>setForm(x=>({...x,intent:e.target.value}))} className={field}><option value="">തിരഞ്ഞെടുക്കുക</option>{intents.map(x=><option key={x}>{x}</option>)}</select></label><label className="font-bold">ബന്ധപ്പെടാൻ സൗകര്യപ്രദം *<select required value={form.contactPreference} onChange={e=>setForm(x=>({...x,contactPreference:e.target.value}))} className={field}><option value="">തിരഞ്ഞെടുക്കുക</option>{preferences.map(x=><option key={x}>{x}</option>)}</select></label></div><label className="mt-5 block font-bold">നിങ്ങളുടെ ആവശ്യം *<textarea required value={form.message} onChange={e=>setForm(x=>({...x,message:e.target.value}))} className={field+" min-h-32"} placeholder="ബിസിനസ്സ്, ഇപ്പോഴുള്ള സ്ഥിതി, ലക്ഷ്യം അല്ലെങ്കിൽ പ്രശ്നം ചുരുക്കി എഴുതുക."/></label><button disabled={status==="sending"} className="mt-6 rounded-xl bg-blue-700 px-6 py-3 font-bold text-white transition hover:bg-blue-800 disabled:opacity-70">{status==="sending"?"അയക്കുന്നു…":"അന്വേഷണം അയക്കൂ"}</button>{status==="success"&&<p role="status" className="mt-4 font-semibold text-emerald-700">നന്ദി. നിങ്ങളുടെ enquiry ലഭിച്ചു. തിരഞ്ഞെടുത്ത രീതിയിൽ ഞങ്ങൾ ബന്ധപ്പെടും.</p>}{status==="error"&&<p role="alert" className="mt-4 font-semibold text-rose-700">അയക്കാൻ കഴിഞ്ഞില്ല. ദയവായി വീണ്ടും ശ്രമിക്കുക അല്ലെങ്കിൽ WhatsApp-ൽ ബന്ധപ്പെടുക.</p>}</form>
 }

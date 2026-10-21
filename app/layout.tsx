@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import Chatbase from "@/components/Chatbase";
+import FloatingActions from "@/components/FloatingActions";
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -156,6 +157,7 @@ export default function RootLayout({
 
   {children}
 
+  <FloatingActions />
 </body>
     </html>
   );
