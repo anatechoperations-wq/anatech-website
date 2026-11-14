@@ -1,13 +1,14 @@
 import { GstComplianceRegister } from "@/components/admin/GstComplianceRegister";
 import { getGstComplianceReport } from "@/lib/admin-gst-reports";
-import { getLeads } from "@/lib/admin-leads";
+import { getLeads, type Lead } from "@/lib/admin-leads";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "CRM Reports" };
 const statuses = ["New", "Contacted", "Interested", "Proposal Sent", "Negotiation", "Won", "Lost"] as const;
 
 export default async function ReportsPage() {
-  const [leads, gstReport] = await Promise.all([getLeads(), getGstComplianceReport()]);
+  const leads: Lead[] = await getLeads();
+  const gstReport = await getGstComplianceReport();
   return <main className="mx-auto max-w-6xl p-8 text-slate-100">
     <p className="text-xs font-bold tracking-[.15em] text-cyan-300">PERFORMANCE & COMPLIANCE</p>
     <h1 className="mt-2 text-3xl font-black">Business reports</h1>
