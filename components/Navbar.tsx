@@ -195,6 +195,13 @@ export default function Navbar() {
 
           </div>
           <a
+            href="/#portfolio"
+            className={navLinkClass}
+          >
+            Portfolio
+          </a>
+
+          <a
             href="/#industries"
             className={navLinkClass}
           >
@@ -308,6 +315,14 @@ export default function Navbar() {
               </Link>
 
             ))}
+
+            <a
+              href="/#portfolio"
+              onClick={() => setIsOpen(false)}
+              className="block px-6 py-4 text-slate-700 transition hover:bg-slate-50 hover:text-blue-700"
+            >
+              Portfolio
+            </a>
 
             <a
               href="/#industries"
