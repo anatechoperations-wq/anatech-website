@@ -1,0 +1,32 @@
+"use client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+const employmentTypes = ["Proprietor", "Employee", "Consultant", "Intern", "Freelancer"] as const;
+const statuses = ["Active", "On leave", "Inactive"] as const;
+type EmploymentType = typeof employmentTypes[number]; type Status = typeof statuses[number];
+type Employee = { employeeId: string; name: string; department: string; designation: string; workEmail: string; phone: string; joinDate: string; employmentType: EmploymentType; monthlyCtc: number; status: Status; notes: string };
+
+export function EmployeeDirectory({ employees }: { employees: Employee[] }) {
+  const router = useRouter(); const today = new Date().toISOString().slice(0, 10);
+  const [name, setName] = useState(""); const [department, setDepartment] = useState("Operations"); const [designation, setDesignation] = useState("");
+  const [workEmail, setWorkEmail] = useState(""); const [phone, setPhone] = useState(""); const [joinDate, setJoinDate] = useState(today);
+  const [employmentType, setEmploymentType] = useState<EmploymentType>("Employee"); const [monthlyCtc, setMonthlyCtc] = useState(0);
+  const [status, setStatus] = useState<Status>("Active"); const [notes, setNotes] = useState(""); const [message, setMessage] = useState("");
+  async function save() { setMessage("Saving employee profile…"); const response = await fetch("/api/admin/employees", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, department, designation, workEmail, phone, joinDate, employmentType, monthlyCtc, status, notes }) }); const data = await response.json().catch(() => null) as { error?: string; employeeId?: string } | null; if (!response.ok) { setMessage(data?.error || "Could not save employee."); return; } setMessage("Employee profile saved: " + data?.employeeId); router.refresh(); }
+  return <main className="mx-auto max-w-7xl p-8 text-slate-100"><p className="text-xs font-bold tracking-[.15em] text-cyan-300">HR & TEAM OPERATIONS</p><h1 className="mt-2 text-3xl font-black">Team directory</h1><p className="mt-3 max-w-3xl text-slate-400">Maintain a secure staff roster for future project assignment, attendance, leave and payroll workflows.</p>
+    <section className="mt-6 rounded-xl border border-amber-500/40 bg-amber-950/30 p-5 text-sm text-amber-100"><strong>Privacy control:</strong> this foundation stores only work contacts and a monthly CTC input. Do not enter Aadhaar, PAN, bank account, passwords or identity-document copies here.</section>
+    <section className="mt-6 rounded-xl border border-slate-700 bg-slate-900/70 p-6"><h2 className="text-xl font-bold">Add team member</h2><div className="mt-5 grid gap-4 md:grid-cols-2">
+      <label>Full name *<input value={name} onChange={e => setName(e.target.value)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" /></label>
+      <label>Department<input value={department} onChange={e => setDepartment(e.target.value)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" placeholder="Operations, Sales, Finance…" /></label>
+      <label>Designation<input value={designation} onChange={e => setDesignation(e.target.value)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" placeholder="Technician, Developer, Manager…" /></label>
+      <label>Employment type<select value={employmentType} onChange={e => setEmploymentType(e.target.value as EmploymentType)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3">{employmentTypes.map(item => <option key={item}>{item}</option>)}</select></label>
+      <label>Work email<input type="email" value={workEmail} onChange={e => setWorkEmail(e.target.value)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" /></label>
+      <label>Work phone<input value={phone} onChange={e => setPhone(e.target.value)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" /></label>
+      <label>Join date *<input type="date" value={joinDate} onChange={e => setJoinDate(e.target.value)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" /></label>
+      <label>Monthly CTC input (₹)<input type="number" min="0" value={monthlyCtc} onChange={e => setMonthlyCtc(Math.max(0, Number(e.target.value) || 0))} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3" /></label>
+      <label>Status<select value={status} onChange={e => setStatus(e.target.value as Status)} className="mt-2 w-full rounded border border-slate-600 bg-slate-950 p-3">{statuses.map(item => <option key={item}>{item}</option>)}</select></label>
+    </div><label className="mt-4 block">Internal role notes<textarea value={notes} onChange={e => setNotes(e.target.value)} className="mt-2 min-h-20 w-full rounded border border-slate-600 bg-slate-950 p-3" placeholder="Skills, access requests, assigned responsibilities…" /></label><button type="button" onClick={save} className="mt-6 rounded-lg bg-cyan-600 px-5 py-3 font-bold">Save team member</button>{message && <p className="mt-3 text-sm text-cyan-200">{message}</p>}</section>
+    <section className="mt-6 rounded-xl border border-slate-700 bg-slate-900/70 p-6"><h2 className="text-xl font-bold">Current team</h2>{employees.length ? <div className="mt-4 overflow-x-auto"><table className="w-full text-left text-sm"><thead className="border-b border-slate-700 text-slate-400"><tr><th className="p-3">Employee</th><th className="p-3">Department</th><th className="p-3">Type</th><th className="p-3">Joined</th><th className="p-3">Status</th></tr></thead><tbody>{employees.map(person => <tr key={person.employeeId} className="border-b border-slate-800"><td className="p-3"><strong>{person.name}</strong><br/><span className="text-slate-400">{person.employeeId} · {person.designation || "Designation pending"}</span></td><td className="p-3">{person.department || "—"}</td><td className="p-3">{person.employmentType}</td><td className="p-3">{person.joinDate}</td><td className="p-3">{person.status}</td></tr>)}</tbody></table></div> : <p className="mt-3 text-slate-400">No team members have been added yet.</p>}</section>
+  </main>;
+}
